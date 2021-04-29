@@ -1,0 +1,11 @@
+---
+- hosts: linux
+  gather_facts : yes
+
+- import_playbook: ubuntu/setup.yml
+  when: ansible_os_family == 'Debian'
+
+- import_playbook: fedora/setup.yml
+  when: ansible_os_family == 'Redhat'
+
+- import_playbook: common/setup.yml

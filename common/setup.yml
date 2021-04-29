@@ -1,0 +1,11 @@
+---
+- hosts: linux
+  become: yes
+  tasks:
+    - name: Install and configure graphical tools
+      import_tasks: graphical.yml
+      when: graphical == true
+
+    - name: Install and configure user specific tools
+      import_tasks: user-config.yml
+

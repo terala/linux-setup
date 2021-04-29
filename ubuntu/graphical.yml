@@ -1,0 +1,31 @@
+---
+- name: Initialize variables
+  include_vars: vars/graphical.yml
+
+- name: Install GNOME packages
+  apt:
+    name: "{{ gnome_pkgs }}"
+    state: present
+  when: desktop == "gnome"
+
+- name: Install packages from extra sources
+  block:
+    - name: Import key
+      apt_key:
+        url: "{{ item.key }}"
+        state: present
+      loop: "{{ extra_sources }}"
+
+    - name: Install extra repos
+      apt_repository:
+        repo: "{{ item.deb_line }}"
+        filename: "{{ item.filename }}"
+        state: present
+      loop: "{{ extra_sources }}"
+
+    - name: Install extra packages
+      apt:
+        name: "{{ item.pkg }}"
+        state: present
+      loop: "{{ extra_sources }}"
+

@@ -1,0 +1,10 @@
+---
+- hosts: ubuntu
+  become: yes
+  tasks:
+    - name: Install base packages
+      import_tasks: base.yml
+
+    - name: Install graphical packages
+      import_tasks: graphical.yml
+

@@ -1,0 +1,20 @@
+---
+- name: Download the font zip
+  get_url:
+    url: "{{ item.url }}"
+    dest: "/tmp/{{ item.name }}.zip"
+  register: zipfile
+
+- name: Create directory for the fonts
+  file:
+    name: "/usr/share/fonts/{{ item.type }}/{{ item.name }}"
+    state: directory
+    mode: "u=rwx,g=rx,o=rx"
+
+- name: Extract zip file
+  unarchive:
+    src: "{{ zipfile.dest }}"
+    dest: "/usr/share/fonts/{{ item.type }}/{{ item.name }}"
+    remote_src: yes
+    mode: "u=rw,g=r,o=r"
+

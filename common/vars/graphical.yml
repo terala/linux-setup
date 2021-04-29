@@ -1,0 +1,61 @@
+---
+gnome_pkgs:
+  - gconf2
+
+gnome_conf:
+  - key: "/org/gnome/desktop/interface/monospace-font-name"
+    value: "Iosevka Term Slab 13"
+    value_type: string
+  - key: "/org/gnome/desktop/interface/clock-show-date"
+    value: true
+    value_type: bool
+  - key: "/org/gnome/desktop/interface/cursor-blink"
+    value: false
+    value_type: bool
+  - key: "/org/gnome/desktop/interface/show-battery-percentage"
+    value: true
+    value_type: bool
+  - key: "/org/gnome/desktop/interface/clock-format"
+    value: '12h'
+    value_type: string
+  - key: "/org/gnome/desktop/datetime/automatic-timezone"
+    value: true
+    value_type: bool
+  - key: "/org/gnome/file-roller/file-selector/show-hidden"
+    value: true
+    value_type: bool
+  - key: "/org/gnome/file-roller/listing/show-path"
+    value: true
+    value_type: bool
+  - key: "/org/gnome/file-roller/ui/view-sidebar"
+    value: true
+    value_type: bool
+  - key: "/org/gnome/gedit/preferences/editor/editor-font"
+    value: "Iosevka Term Slab 13"
+    value_type: string
+  - key: "/org/gnome.gedit/preferences/editor/insert-spaces"
+    value: true
+    value_type: bool
+  - key: "/org/gnome/gnome-session/auto-save-session"
+    value: true
+    value_type: bool
+  - key: "/org/gnome/nautilus/preferences/show-hidden-files"
+    value: true
+    value_type: bool
+  - key: "/org/gnome/shell/weather/automatic-location"
+    value: true
+    value_type: bool
+  - key: "/org/gnome/system/location/enabled"
+    value: true
+    value_type: bool
+
+fonts:
+  - name: Iosevka
+    url: https://github.com/be5invis/Iosevka/releases/download/v6.0.1/super-ttc-iosevka-slab-6.0.1.zip
+    filename: iosevka-slab.ttc
+    type: opentype
+  - name: JuliaMono
+    url: https://github.com/cormullion/juliamono/blob/master/juliamono-ttf.zip?raw=true
+    filename: JuliaMono-Regular.ttf
+    type: truetype
+

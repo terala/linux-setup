@@ -1,0 +1,9 @@
+---
+- name: Initialize install set
+  include_vars: vars/base.yml
+
+- name: Install base packages
+  apt:
+    name: "{{ base_pkgs }}"
+    state: present
+

@@ -1,0 +1,12 @@
+---
+base_pkgs:
+  - curl
+  - git
+  - htop
+  - ranger
+  - tmux
+  - tmuxinator
+  - zsh
+  - tig
+  - apt-transport-https
+

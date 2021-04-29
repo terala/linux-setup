@@ -1,0 +1,30 @@
+---
+graphical_pkgs:
+  - meld
+  - vlc
+ 
+
+gnome_pkgs:
+  - gnome-tweaks
+  - gnome-shell-extension-bluetooth-quick-connect
+  - gnome-shell-extension-draw-on-your-screen
+  - gnome-shell-extension-freon
+  - gnome-shell-extension-multi-monitors
+  - gnome-shell-extension-system-monitor
+  - gnome-shell-extension-weather
+  - gnome-dictionary
+  - gnome-calendar
+  - gnome-authenticator
+
+extra_sources:
+  - name: Chrome
+    deb_line: "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main"
+    pkg: google-chrome-stable
+    key: https://dl.google.com/linux/linux_signing_key.pub
+    filename: google-chrome
+  - name: Visual Studio Code
+    deb_line: "deb [arch=amd64] https://packages.microsoft.com/repos/code stable main"
+    pkg: code
+    key: https://packages.microsoft.com/keys/microsoft.asc
+    filename: vscode
+

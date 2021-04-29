@@ -1,0 +1,25 @@
+---
+
+- name: Load variables for graphical tasks
+  include_vars: vars/graphical.yml
+
+- name: Install fonts
+  include_tasks: install_font.yml
+  loop: "{{ fonts }}"
+
+- name: Install Gnome packages needed
+  apt:
+    name: "{{ gnome_pkgs }}"
+    state: present
+  when: desktop == "gnome"
+
+- name: Configure Gnome
+  become: no
+  community.general.gconftool2:
+    key: "{{ item.key }}"
+    value: "{{ item.value }}"
+    value_type: "{{ item.value_type }}"
+    state: present
+  loop: "{{ gnome_conf }}"
+  when: desktop == "gnome"
+

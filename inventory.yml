@@ -1,0 +1,21 @@
+---
+all:
+  hosts:
+    localhost:
+      ansible_connection: local
+      ansible_host: localhost
+  children:
+    linux:
+      children:
+        fedora:
+          vars:
+            desktop: kde
+            graphical: yes
+        ubuntu:
+          vars:
+            desktop: gnome
+            graphical: yes
+    ubuntu:
+      hosts:
+        localhost:
+

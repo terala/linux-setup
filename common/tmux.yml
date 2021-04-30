@@ -1,0 +1,26 @@
+---
+- name: Load tmux configuration
+  include_vars: vars/tmux-config.yml
+
+- name: Configure tmux
+  become: no
+  block:
+    - name: Install initial configuration files
+      get_url:
+        url: "{{ item.url }}"
+        dest: "~/{{ item.filename }}"
+      loop: "{{ tmux.files }}"
+
+    - name: Customize .tmux.local.conf
+      replace:
+        path: "~/.tmux.local.conf"
+        regexp: "{{ item.regexp }}"
+        replace: "{{ item.line }}"
+      loop: "{{ tmux.config }}"
+
+    - name: Enable powerline customizations for tmux
+      blockinfile:
+        path: "~/.tmux.local.conf"
+        block: "{{ tmux.theme_block }}"
+        marker: "# theme-{mark} ANSIBLE MANAGED BLOCK"
+        insertafter: "# status left/right sections separators"

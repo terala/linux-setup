@@ -1,0 +1,99 @@
+# Common aliases
+alias la='ls -lah --color=auto'
+alias lh='ls -lh --color=auto'
+alias ls='ls --color=auto'
+alias l='ls --color=auto'
+alias grep='grep --color=auto'
+
+# Keybindings for substring search plugin. Maps up and down arrows.
+bindkey -M main '^[OA' history-substring-search-up
+bindkey -M main '^[OB' history-substring-search-down
+bindkey -M main '^[[A' history-substring-search-up
+bindkey -M main '^[[B' history-substring-search-up
+
+# Gray color for autosuggestions
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=247'
+
+# Load via zplug
+source {{ zsh.zplug.path }}/init.zsh
+
+zplug "junegunn/fzf-bin", \
+    from:gh-r, \
+    as:command, \
+    rename-to:fzf, \
+    use:"*darwin*amd64*"
+
+# Oh-My-ZSH plugins
+
+{% for pl in zsh.oh_my_zsh_plugins %}
+ zplug "plugins/{{ pl }}", from:oh-my-zsh
+{% endfor %}
+
+# Theme
+zplug "{{ zsh.theme }}", as:theme
+
+zplug "lib/clipboard", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
+
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "zsh-users/zsh-history-substring-search", defer:3
+zplug "zsh-users/zsh-completions", depth:1
+
+# Plugins
+{% for pl in zsh.plugins %}
+zplug "{{ pl }}"
+{% endfor %}
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    zplug install
+fi
+
+# Custom configuraitons
+
+# Then, source plugins and add commands to $PATH
+zplug load
+
+# Standard zsh options
+
+# see zshoptions(1) for details on what these do
+# see also zshexpn(1) for details on how globbing works
+setopt append_history # better concurrent shell history sharing
+setopt auto_pushd # cd foo; cd bar; popd --> in foo again
+setopt complete_in_word # more intuitive completions
+setopt no_beep # BEEP
+setopt extended_glob # better globs
+setopt extended_history # better history
+# setopt glob_complete # (see manual for description & tradeoffs)
+setopt glob_star_short # ** means **/*, **/ means directory only **
+setopt hist_expire_dups_first # don't fill your history as quickly with junk
+setopt hist_ignore_space # ` command` doesn't save to history
+setopt hist_subst_pattern # better globs / parameter expansion
+setopt hist_reduce_blanks # `a  b` normalizes to `a b` in history
+setopt hist_verify # reduce oops I sudoed the wrong thing
+setopt interactive_comments # so pasting live to test works
+setopt ksh_glob # better globs
+setopt long_list_jobs # easier to read job stuff
+setopt null_glob # sane globbing
+setopt pipe_fail # fail when the first command in a pipeline fails
+setopt share_history # better concurrent shell history sharing
+setopt no_rm_star_silent # confirm on `rm *` (default, but let's be safe)
+setopt prompt_cr prompt_sp # don't clobber output without trailing newlines
+# setopt rm_star_wait # wait after confirmation on `rm *` to allow ^C
+
+# see zshmodules(1)
+zmodload -Fm zsh/files b:zf_\* # emergency file manip under zf_*
+zmodload zsh/complist # completion menus
+zmodload zsh/mathfunc # better mathematical evaluation
+zmodload zsh/termcap 2>/dev/null # terminal resources (if available)
+zmodload zsh/terminfo 2>/dev/null # terminal resources (if available)
+
+# see zshcontrib(1)
+autoload -Uz zargs # like xargs, but works with globs
+autoload -Uz zcalc # like bc, but uses Zsh mathematical evaluation
+autoload -Uz zmathfunc; zmathfunc # better mathematical evaluation
+autoload -Uz zmv # like mv, but uses patterns (`zmv '(*).lis' '$1.txt'`)
+
+zstyle ':completion:*' menu yes select # complete with a nicer menu
+
+# Custom autoloads for the plugins
+autoload -U compinit && compinit

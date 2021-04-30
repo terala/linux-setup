@@ -8,4 +8,3 @@
 
     - name: Install and configure user specific tools
       import_tasks: user-config.yml
-

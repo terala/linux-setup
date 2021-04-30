@@ -1,0 +1,35 @@
+---
+zsh:
+  zplug:
+    path: "~/.zplug"
+    url: https://github.com/zplug/zplug.git
+
+  plugins:
+    - 3v1n0/zsh-bash-completions-fallback
+    - chitoku-k/fzf-zsh-completions
+    - eastokes/aws-plugin-zsh
+    - zsh-users/zsh-autosuggestions
+    - zsh-users/zsh-history-substring-search
+
+  theme:  CristianCantoro/colorbira-zsh-theme
+
+  oh_my_zsh_plugins:
+    - ansible
+    - aws
+    - colorize
+    - common-aliases
+    - docker
+    - docker-compose
+    - encode64
+    - git
+    - git-extras
+    - git-lfs
+    - github
+    - gitignore
+    - golang
+    - gradle
+    - lib/clipboard
+    - tig
+    - tmux
+    - tmuxinator
+    - zsh-interactive-cd

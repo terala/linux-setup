@@ -1,0 +1,22 @@
+---
+vim:
+  pathogen_url: https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim
+  bundles:
+    - name: fzf
+      url: https://github.com/junegunn/fzf.vim.git
+    - name: ctrlpvim
+      url: https://github.com/ctrlpvim/ctrlp.vim.git
+    - name: nerdtree
+      url: https://github.com/preservim/nerdtree.git
+    - name: vim-airline
+      url: https://github.com/vim-airline/vim-airline.git
+    - name: vim-floaterm
+      url: https://github.com/voldikss/vim-floaterm.git
+    - name: vim-fugitive
+      url: https://github.com/tpope/vim-fugitive.git
+    - name: vim-gitgutter
+      url: https://github.com/airblade/vim-gitgutter.git
+    - name: vim-go
+      url: https://github.com/fatih/vim-go.git
+    - name: bufexplorer
+      url: https://github.com/jlanzarotta/bufexplorer.git

@@ -1,0 +1,32 @@
+---
+
+- name: Load vim configuration
+  include_vars: vars/vim-config.yml
+
+- name: Configure vim
+  become: no
+  block:
+    - name: Create directories needed for vim
+      file:
+        name: "{{ item }}"
+        state: directory
+      loop:
+        - "~/.vim"
+        - "~/.vim/autoload"
+        - "~/.vim/bundle"
+
+    - name: Deploy .vimrc
+      template:
+        src: ".vimrc.j2"
+        dest: "~/.vimrc"
+
+    - name: Deploy pathogen
+      get_url:
+        url: "{{ vim.pathogen_url }}"
+        dest: "~/.vim/autoload/pathogen.vim"
+
+    - name: Deploy bundles
+      git:
+        repo: "{{ item.url }}"
+        dest: "~/.vim/bundle/{{ item.name }}"
+      loop: "{{ vim.bundles }}"

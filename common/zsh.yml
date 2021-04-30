@@ -1,0 +1,16 @@
+
+- name: Load zsh configuration
+  include_vars: vars/zsh-config.yml
+
+- name: Configure zsh
+  become: no
+  block:
+    - name: Clone zplug
+      git:
+        repo: "{{ zsh.zplug.url }}"
+        dest: "{{ zsh.zplug.path }}"
+
+    - name: Deploy .zshrc
+      template:
+        src: ".zshrc.j2"
+        dest: "~/.zshrc"

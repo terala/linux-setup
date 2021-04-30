@@ -3,25 +3,10 @@
   include_vars: vars/user-config.yml
 
 - name: Configure tmux
-  become: no
-  block:
-    - name: Install initial configuration files
-      get_url:
-        url: "{{ item.url }}"
-        dest: "~/{{ item.filename }}"
-      loop: "{{ tmux.files }}"
+  include_tasks: tmux.yml
 
-    - name: Customize .tmux.local.conf
-      replace:
-        path: "~/.tmux.local.conf"
-        regexp: "{{ item.regexp }}"
-        replace: "{{ item.line }}"
-      loop: "{{ tmux.config }}"
+- name: Configure vim
+  include_tasks: vim.yml
 
-    - name: Enable powerline customizations for tmux
-      blockinfile:
-        path: "~/.tmux.local.conf"
-        block: "{{ tmux.theme_block }}"
-        marker: "# theme-{mark} ANSIBLE MANAGED BLOCK"
-        insertafter: "# status left/right sections separators"
-
+- name: Configure zsh
+  include_tasks: zsh.yml

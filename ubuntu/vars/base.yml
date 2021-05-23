@@ -10,3 +10,4 @@ base_pkgs:
   - tmux
   - tmuxinator
   - zsh
+  - powertop

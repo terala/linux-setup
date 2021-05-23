@@ -1,0 +1,36 @@
+---
+graphical_pkgs:
+  - code
+  - google-chrome-stable
+  - meld
+  - vlc
+  - vlc-extras
+
+gnome_pkgs:
+  - gnome-calendar
+  - gnome-dictionary
+  - gnome-shell-extension-netspeed
+  - gnome-shell-extension-openweather
+  - gnome-shell-extension-pop-shell
+  - gnome-tweaks
+  - gnome-shell-extension-freon
+  - gnome-shell-extension-system-monitor-applet
+  - gnome-extensions-app
+#  - gnome-authenticator
+#  - gnome-shell-extension-bluetooth-quick-connect
+#  - gnome-shell-extension-draw-on-your-screen
+#  - gnome-shell-extension-multi-monitors
+#  - gnome-shell-extension-weather
+  -
+
+extra_repos:
+  - name: Chrome Repos
+    description: Google Chrome Repo
+    baseurl: https://dl.google.com/linux/chrome/rpm/stable/x86_64
+    key: https://dl.google.com/linux/linux_signing_key.pub
+    filename: google-chrome
+  - name: Visual Studio Code
+    description: Visual Studio Code Editor repo
+    baseurl: https://packages.microsoft.com/yumrepos/vscode
+    key: https://packages.microsoft.com/keys/microsoft.asc
+    filename: vscode

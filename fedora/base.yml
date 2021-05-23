@@ -1,0 +1,14 @@
+---
+- name: Initialize install set
+  include_vars: vars/base.yml
+
+- name: Install RPM Fusion repos
+  dnf:
+    name: "{{ rpmfusion_repos }}"
+    state: present
+    disable_gpg_check: yes
+
+- name: Install base packages
+  dnf:
+    name: "{{ base_pkgs }}"
+    state: present

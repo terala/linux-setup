@@ -9,13 +9,16 @@ all:
       children:
         fedora:
           vars:
-            desktop: kde
+            desktop: gnome
             graphical: yes
         ubuntu:
           vars:
             desktop: gnome
             graphical: yes
     ubuntu:
+      hosts:
+        localhost:
+    fedora:
       hosts:
         localhost:
 

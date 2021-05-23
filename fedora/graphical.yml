@@ -1,0 +1,27 @@
+---
+- name: Initialize variables
+  include_vars: vars/graphical.yml
+
+- name: Install packages from extra repos
+  block:
+    - name: Install repos
+      yum_repository:
+        name: "{{ item.filename }}"
+        description: "{{ item.description }}"
+        baseurl: "{{ item.baseurl }}"
+        gpgkey: "{{ item.key }}"
+        state: present
+        enabled: yes
+      loop: "{{ extra_repos }}"
+
+- name: Install GNOME packages
+  dnf:
+    name: "{{ gnome_pkgs }}"
+    state: present
+  when: desktop == "gnome"
+
+- name: Install graphical packages
+  dnf:
+    name: "{{ graphical_pkgs }}"
+    state: present
+

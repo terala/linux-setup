@@ -7,11 +7,17 @@
   include_tasks: install_font.yml
   loop: "{{ fonts }}"
 
-- name: Install Gnome packages needed
+- name: Install Gnome packages for Ubuntu
   apt:
-    name: "{{ gnome_pkgs }}"
+    name: "{{ ubuntu_gnome_pkgs }}"
     state: present
-  when: desktop == "gnome"
+  when: desktop == "gnome" and ansible_distribution == "Ubuntu"
+
+- name: Install Gnome packages for Fedora
+  dnf:
+    name: "{{ fedora_gnome_pkgs }}"
+    state: present
+  when: desktop == "gnome" and ansible_distribution == "Fedora"
 
 - name: Configure Gnome
   become: no
@@ -23,3 +29,21 @@
   loop: "{{ gnome_conf }}"
   when: desktop == "gnome"
 
+- name: Install VSCode extensions
+  become: no
+  block:
+    - name: Query installed extensions
+      command:
+        argv:
+          - code
+          - --list-extensions
+      register: list_extensions_output
+    - set_fact:
+        to_be_installed: "{{ vscode_extensions | difference(list_extensions_output.stdout_lines | lower) }}"
+    - name: Install VSCode extensions
+      command:
+        argv:
+          - code
+          - --install-extension
+          - "{{ item }}"
+      loop: "{{ to_be_installed }}"

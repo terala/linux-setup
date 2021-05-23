@@ -2,9 +2,19 @@
 - hosts: linux
   become: yes
   tasks:
+    - name: Configure machine
+      import_tasks: machine.yml
+
+    - name: Add current user to the admin
+      user:
+        name: "{{ ansible_facts.env.SUDO_USER }}"
+        groups: "{{ machine.sudo_group }}"
+        append: yes
+
     - name: Install and configure graphical tools
       import_tasks: graphical.yml
       when: graphical == true
-
+      
     - name: Install and configure user specific tools
-      import_tasks: user-config.yml
+      become: no
+      import_tasks: user.yml

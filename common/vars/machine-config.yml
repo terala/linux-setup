@@ -1,0 +1,5 @@
+---
+machine:
+  umask: "077"
+  aliases_path: /etc/profile.d/aliases.sh
+  sudo_group: admin

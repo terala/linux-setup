@@ -1,6 +1,17 @@
 ---
-gnome_pkgs:
+ubuntu_gnome_pkgs:
   - gconf2
+  - libva
+  - libva-intel-driver
+  - libva-utils
+  - libva-vdpau-driver
+
+fedora_gnome_pkgs:
+  - GConf2
+  - libva
+  - libva-intel-driver
+  - libva-utils
+  - libva-vdpau-driver
 
 gnome_conf:
   - key: "/org/gnome/desktop/interface/monospace-font-name"
@@ -59,3 +70,16 @@ fonts:
     filename: JuliaMono-Regular.ttf
     type: truetype
 
+vscode_extensions:
+  - mhutchie.git-graph
+  - editorconfig.editorconfig
+  - eamodio.gitlens
+  - oderwat.indent-rainbow
+  # Utils
+  - mitchdenny.ecdc
+  - golang.go
+  # Python related
+  - ms-python.python
+  - njpwerner.autodocstring
+  # Ansible
+  - haaaad.ansible

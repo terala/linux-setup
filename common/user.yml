@@ -10,3 +10,9 @@
 
 - name: Configure zsh
   include_tasks: zsh.yml
+
+- name: Change current user's shell to zsh
+  become: yes
+  user:
+    name: "{{ ansible_facts.env.SUDO_USER }}"
+    shell: /usr/bin/zsh

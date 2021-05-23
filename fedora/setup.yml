@@ -1,8 +1,10 @@
 ---
 - hosts: fedora
-
+  become: yes
   tasks:
-    - name: Greetings
-      debug:
-        msg: "Hello World"
+    - name: Install base packages
+      import_tasks: base.yml
+
+    - name: Install graphical packages
+      import_tasks: graphical.yml
 

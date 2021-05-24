@@ -1,10 +1,13 @@
 ---
 ubuntu_gnome_pkgs:
   - gconf2
-  - libva
-  - libva-intel-driver
-  - libva-utils
-  - libva-vdpau-driver
+  - libva2
+  - intel-media-va-driver
+  - intel-media-va-driver-non-free
+  - vainfo
+  - vdpauinfo
+  - mesa-vdpau-drivers
+  - libvdpau-va-gl1
 
 fedora_gnome_pkgs:
   - GConf2

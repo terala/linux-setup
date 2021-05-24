@@ -16,3 +16,40 @@
   user:
     name: "{{ ansible_facts.env.SUDO_USER }}"
     shell: /usr/bin/zsh
+
+- name: Setup common ssh options
+  become: no
+  block:
+    - name: Create .ssh directory
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: "u=rwx,go="
+      loop:
+        - "~/.ssh"
+        - "~/.ssh/multiplex"
+
+    - name: Check if ~/.ssh/config exists
+      stat:
+        path: "~/.ssh/config"
+      register: ssh_config
+
+    - name: Create ~/.ssh/config
+      file:
+        path: "~/.ssh/config"
+        state: touch
+        mode: "u=rw,go="
+      when: ssh_config.stat.exists == false
+
+    - name: Add common ssh options
+      blockinfile:
+        path: "~/.ssh/config"
+        block: |
+          Host *
+            ForwardX11              yes
+            ForwardAgent            yes
+            Compression             yes
+            StrictHostKeyChecking   no
+            ControlMaster           auto
+            ControlPath             ~/.ssh/multiplex/%r@%h:%p
+            ControlPersist          1

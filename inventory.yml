@@ -8,13 +8,7 @@ all:
     linux:
       children:
         fedora:
-          vars:
-            desktop: gnome
-            graphical: yes
         ubuntu:
-          vars:
-            desktop: gnome
-            graphical: yes
     ubuntu:
       hosts:
         localhost:

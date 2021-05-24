@@ -2,7 +2,6 @@
 graphical_pkgs:
   - meld
   - vlc
- 
 
 gnome_pkgs:
   - gnome-tweaks

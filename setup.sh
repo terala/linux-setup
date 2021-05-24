@@ -1,18 +1,21 @@
 #!/bin/bash
 # vim: set ft=shell ts=2 sw=4 expandtab
 
+set -e
+
+PATH=$PATH:$HOME/.local/bin
+
 function ensure_ansible() {
-  echo -n "Installing ansible ... "
+  echo -n "Checking for ansible ... "
   if ! command -v ansible &> /dev/null
   then
-      if [ -f /etc/fedora-release ]; then
-        sudo yum install -y ansible
-      else
-        sudo apt install -y ansible
-      fi
+    echo "Not Found. Installing..."
+    curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
+    python3 /tmp/get-pip.py
+    python3 -m pip install ansible
     echo "Done."
   else
-    echo "Skipping."
+    echo "Found."
   fi
 }
 function install_galaxy_components() {

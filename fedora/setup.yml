@@ -7,4 +7,4 @@
 
     - name: Install graphical packages
       import_tasks: graphical.yml
-
+      when: graphical == true

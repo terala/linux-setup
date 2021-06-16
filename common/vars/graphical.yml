@@ -17,9 +17,6 @@ fedora_gnome_pkgs:
   - libva-vdpau-driver
 
 gnome_conf:
-  - key: "/org/gnome/desktop/interface/monospace-font-name"
-    value: "Iosevka Term Slab 13"
-    value_type: string
   - key: "/org/gnome/desktop/interface/clock-show-date"
     value: true
     value_type: bool
@@ -62,6 +59,23 @@ gnome_conf:
   - key: "/org/gnome/system/location/enabled"
     value: true
     value_type: bool
+  # Fonts
+  - key: "/org/gnome/desktop/interface/font-antialiasing"
+    value: "subpixel"
+    value_type: string
+  - key: "/org/gnome/desktop/interface/monospace-font-name"
+    value: "Iosevka Fixed Slab Light 13"
+    value_type: string
+  # Gnome-themes
+  - key: "/org/gnome/desktop/interface/gtk-theme"
+    value: "Adwaita"
+    value_type: string
+  - key: "/org/gnome/desktop/interface/icon-theme"
+    value: "Adwaita"
+    value_type: string
+  - key: "/org/gnome/desktop/interface/cursor-theme"
+    value: "whiteglass"
+    value_type: string
 
 fonts:
   - name: Iosevka

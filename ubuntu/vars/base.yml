@@ -11,3 +11,5 @@ base_pkgs:
   - tmuxinator
   - zsh
   - powertop
+  - exa
+  - vim

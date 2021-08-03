@@ -14,7 +14,7 @@
     - name: Install and configure graphical tools
       import_tasks: graphical.yml
       when: graphical == true
-      
+
     - name: Install and configure user specific tools
       become: no
       import_tasks: user.yml

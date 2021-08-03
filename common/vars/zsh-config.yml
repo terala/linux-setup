@@ -1,35 +1,48 @@
 ---
 zsh:
-  zplug:
-    path: "~/.zplug"
-    url: https://github.com/zplug/zplug.git
+  znap:
+    path: /etc/znap
+    url: https://github.com/marlonrichert/zsh-snap.git
+
+  # plugins:
+  #   - 3v1n0/zsh-bash-completions-fallback
+  #   - chitoku-k/fzf-zsh-completions
+  #   - eastokes/aws-plugin-zsh
+  #   - zsh-users/zsh-autosuggestions
+  #   - zsh-users/zsh-history-substring-search
+
+  # theme:  CristianCantoro/colorbira-zsh-theme
+
+  # oh_my_zsh_plugins:
+  #   - ansible
+  #   - aws
+  #   - colorize
+  #   - common-aliases
+  #   - docker
+  #   - docker-compose
+  #   - encode64
+  #   - git
+  #   - git-extras
+  #   - git-lfs
+  #   - github
+  #   - gitignore
+  #   - golang
+  #   - gradle
+  #   - lib/clipboard
+  #   - tig
+  #   - tmux
+  #   - tmuxinator
+  #   - zsh-interactive-cd
 
   plugins:
-    - 3v1n0/zsh-bash-completions-fallback
-    - chitoku-k/fzf-zsh-completions
-    - eastokes/aws-plugin-zsh
-    - zsh-users/zsh-autosuggestions
-    - zsh-users/zsh-history-substring-search
+    - CristianCantoro/colorbira-zsh-theme
+    - marlonrichert/zsh-autocomplete
+    - marlonrichert/zsh-edit
+    - chrissicool/zsh-256color
+    - unixorn/git-extra-commands
+    - peterhurford/git-aliases.zsh
+    - jonmosco/kube-ps1
+    - tjquillan/zsh-pipenv
+    - mattberther/zsh-pyenv
 
-  theme:  CristianCantoro/colorbira-zsh-theme
-
-  oh_my_zsh_plugins:
-    - ansible
-    - aws
-    - colorize
-    - common-aliases
-    - docker
-    - docker-compose
-    - encode64
-    - git
-    - git-extras
-    - git-lfs
-    - github
-    - gitignore
-    - golang
-    - gradle
-    - lib/clipboard
-    - tig
-    - tmux
-    - tmuxinator
-    - zsh-interactive-cd
+  theme: colorbira-zsh-theme

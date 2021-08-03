@@ -7,7 +7,7 @@
     path: /etc/profile
     block: |
       umask {{ machine.umask }}
-  
+
 - name: Deploy common aliases
   template:
     src: aliases.sh.j2
@@ -19,7 +19,7 @@
       lineinfile:
         path: /etc/default/useradd
         regexp: "^SHELL=.*$"
-        line: "SHELL=/usr/bin/zsh"    
+        line: "SHELL=/usr/bin/zsh"
         state: present
 
     - name: Enable skeleton files for all new users
@@ -39,11 +39,28 @@
         dest: "/etc/skel/{{ item.filename }}"
       loop: "{{ tmux.files }}"
 
+    - name: Enable bash completion for all new users
+      template:
+        src: global-.bashrc.j2
+        dest: /etc/skel/.bashrc
 
-- name: Enable bash completion for all new users
-  template:
-    src: global-.bashrc.j2
-    dest: /etc/skel/.bashrc
+    - name: Load znap and zsh config
+      include_vars: vars/zsh-config.yml
+
+    - name: Clone znap
+      git:
+        repo: "{{ zsh.znap.url }}"
+        dest: "{{ zsh.znap.path }}"
+
+    - name: Deploy znap enabled .zshrc for all users
+      template:
+        src: ".zshrc.j2"
+        dest: "/etc/skel/.zshrc"
+
+    - name: Create .znap directory in skel
+      file:
+        path: /etc/skel/.znap
+        state: directory
 
 - name: Admin group for sudo access
   block:

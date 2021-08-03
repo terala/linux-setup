@@ -1,14 +1,13 @@
-
 - name: Load zsh configuration
   include_vars: vars/zsh-config.yml
 
 - name: Configure zsh
   become: no
   block:
-    - name: Clone zplug
+    - name: Clone znap
       git:
-        repo: "{{ zsh.zplug.url }}"
-        dest: "{{ zsh.zplug.path }}"
+        repo: "{{ zsh.znap.url }}"
+        dest: "{{ zsh.znap.path }}"
 
     - name: Deploy .zshrc
       template:

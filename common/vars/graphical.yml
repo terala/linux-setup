@@ -12,7 +12,8 @@ ubuntu_gnome_pkgs:
 fedora_gnome_pkgs:
   - GConf2
   - libva
-  - libva-intel-driver
+#  - libva-intel-driver
+  - libva-intel-hybrid-driver
   - libva-utils
   - libva-vdpau-driver
 
@@ -99,4 +100,3 @@ vscode_extensions:
   - ms-python.python
   - njpwerner.autodocstring
   # Ansible
-  - haaaad.ansible

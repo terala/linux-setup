@@ -29,6 +29,23 @@
   loop: "{{ gnome_conf }}"
   when: desktop == "gnome"
 
+- name: Install VSCode Repo
+  block:
+    - name: Install VSCode Yum repo
+      yum_repository:
+        name: visual-studio-code
+        description: Yum repo for Visual Studio Code
+        file: vscode.repo
+        baseurl: https://packages.microsoft.com/yumrepos/vscode
+        enabled: yes
+        gpgcheck: yes
+        gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+    - name: Install Visual Studio Code
+      yum:
+        name: code
+        state: present
+  when: ansible_distribution == "Fedora"
+
 - name: Install VSCode extensions
   become: no
   block:

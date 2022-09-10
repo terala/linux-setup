@@ -1,2 +1,2 @@
-# Allow members of group {{ machine.sudo_group }} to execute any command without passoword
-%{{ machine.sudo_group}}    ALL=(ALL:ALL) NOPASSWD: ALL
+# Allow members of group {{ sudo_group | mandatory }} to execute any command without passoword
+%{{ sudo_group | mandatory }}    ALL=(ALL:ALL) NOPASSWD: ALL

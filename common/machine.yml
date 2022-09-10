@@ -1,78 +1,106 @@
 ---
-- name: Import server setup variables
-  include_vars: vars/machine-config.yml
+- hosts: linux
+  become: yes
+  vars:
+    machine:
+      aliases_path: /etc/profile.d/aliases.sh
 
-- name: Use a safer umask default
-  blockinfile:
-    path: /etc/profile
-    block: |
-      umask {{ machine.umask }}
+  tasks:
+    - name: Use a safer umask default
+      blockinfile:
+        path: /etc/profile
+        block: |
+          umask {{ umask }}
 
-- name: Deploy common aliases
-  template:
-    src: aliases.sh.j2
-    dest: "{{ machine.aliases_path }}"
-
-- name: Default shell and skel files for new users
-  block:
-    - name: Enable zsh for all new users
-      lineinfile:
-        path: /etc/default/useradd
-        regexp: "^SHELL=.*$"
-        line: "SHELL=/usr/bin/zsh"
-        state: present
-
-    - name: Enable skeleton files for all new users
-      lineinfile:
-        path: /etc/default/useradd
-        regexp: ^[# ]*SKEL=(.*)$
-        line: SKEL=\g<1>
-        state: present
-        backrefs: yes
-
-    - name: Load tmux file configuration
-      include_vars: vars/tmux-config.yml
-
-    - name: Deploy tmux configuration for all new users
-      get_url:
-        url: "{{ item.url }}"
-        dest: "/etc/skel/{{ item.filename }}"
-      loop: "{{ tmux.files }}"
-
-    - name: Enable bash completion for all new users
+    - name: Deploy common aliases
       template:
-        src: global-.bashrc.j2
-        dest: /etc/skel/.bashrc
+        src: aliases.sh.j2
+        dest: "{{ machine.aliases_path }}"
 
-    - name: Load znap and zsh config
-      include_vars: vars/zsh-config.yml
+    - name: Default shell and skel files for new users
+      block:
+        - name: Enable zsh for all new users
+          lineinfile:
+            path: /etc/default/useradd
+            regexp: "^SHELL=.*$"
+            line: "SHELL=/usr/bin/zsh"
+            state: present
 
-    - name: Clone znap
-      git:
-        repo: "{{ zsh.znap.url }}"
-        dest: "{{ zsh.znap.path }}"
+        - name: Enable skeleton files for all new users
+          lineinfile:
+            path: /etc/default/useradd
+            regexp: ^[# ]*SKEL=(.*)$
+            line: SKEL=\g<1>
+            state: present
+            backrefs: yes
 
-    - name: Deploy znap enabled .zshrc for all users
-      template:
-        src: ".zshrc.j2"
-        dest: "/etc/skel/.zshrc"
+        - name: Load tmux file configuration
+          include_vars: vars/tmux-config.yml
 
-    - name: Create .znap directory in skel
-      file:
-        path: /etc/skel/.znap
-        state: directory
+        - name: Deploy tmux configuration for all new users
+          get_url:
+            url: "{{ item.url }}"
+            dest: "/etc/skel/{{ item.filename }}"
+          loop: "{{ tmux.files }}"
 
-- name: Admin group for sudo access
-  block:
-    - name: Create admin group
-      group:
-        name: "{{ machine.sudo_group }}"
-        state: present
+        - name: Enable bash completion for all new users
+          template:
+            src: global-.bashrc.j2
+            dest: /etc/skel/.bashrc
 
-    - name: Deploy sudoers file
-      template:
-        src: admin.sudo.j2
-        dest: "/etc/sudoers.d/admin"
-        owner: root
-        group: root
-        mode: "u=rw,g=,o="
+        - name: Load znap and zsh config
+          include_vars: vars/zsh-config.yml
+
+        - name: Clone znap
+          git:
+            repo: "{{ zsh.znap.url }}"
+            dest: "{{ zsh.znap.path }}"
+
+        - name: Deploy znap enabled .zshrc for all users
+          template:
+            src: ".zshrc.j2"
+            dest: "/etc/skel/.zshrc"
+
+        - name: Create .znap directory in skel
+          file:
+            path: /etc/skel/.znap
+            state: directory
+
+    - name: Admin group for sudo access
+      block:
+        - name: Create admin group
+          group:
+            name: "{{ sudo_group | mandatory }}"
+            state: present
+
+        - name: Deploy sudoers file
+          template:
+            src: admin.sudo.j2
+            dest: "/etc/sudoers.d/{{ sudo_group | mandatory }}"
+            owner: root
+            group: root
+            mode: "u=rw,g=,o="
+
+    - debug:
+        var: avahi
+
+    - name: Install avahi for MDNS advertisement
+      block:
+        - name: Install avahi package
+          dnf:
+            name: avahi
+            state: present
+
+        - name: Publish SSH and SFTP services for Avahi
+          template:
+            src: avahi_ssh_sftp.service.j2
+            dest: /etc/avahi/services/ssh_sftp.service
+
+        - name: Enable avahi to start
+          systemd:
+            name: avahi-daemon
+            state: started
+            enabled: yes
+            masked: no
+            daemon_reload: yes
+      when: (avahi is defined) and (avahi == True)

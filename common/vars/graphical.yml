@@ -12,8 +12,8 @@ ubuntu_gnome_pkgs:
 fedora_gnome_pkgs:
   - GConf2
   - libva
-#  - libva-intel-driver
-  - libva-intel-hybrid-driver
+  - libva-intel-driver
+  # - libva-intel-hybrid-driver
   - libva-utils
   - libva-vdpau-driver
 
@@ -28,7 +28,7 @@ gnome_conf:
     value: true
     value_type: bool
   - key: "/org/gnome/desktop/interface/clock-format"
-    value: '12h'
+    value: "12h"
     value_type: string
   - key: "/org/gnome/desktop/datetime/automatic-timezone"
     value: true
@@ -100,3 +100,10 @@ vscode_extensions:
   - ms-python.python
   - njpwerner.autodocstring
   # Ansible
+  - zbr.vscode-ansible
+  - MattiasBaake.vscode-snippets-for-ansible
+  # Markdown
+  - yzhang.markdown-all-in-one
+  - shd101wyy.markdown-preview-enhanced
+  - davidanson.vscode-markdownlint
+  - bierner.markdown-mermaid

@@ -6,8 +6,7 @@ source {{ zsh.znap.path }}/znap.zsh
 
 # Load plugins
 # For oh-my-zsh and related themes
-znap source ohmyzsh/ohmyzsh \
-   'lib/(*~(git|theme-and-appearance).zsh)' plugins/git
+znap source ohmyzsh/ohmyzsh lib/{git,theme-and-appearance}
 
 {% for pl in zsh.plugins %}
 znap source {{ pl }}

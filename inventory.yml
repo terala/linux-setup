@@ -4,15 +4,19 @@ all:
     localhost:
       ansible_connection: local
       ansible_host: localhost
+    inspiron:
+      ansible_host: inspiron.local
+      ansible_python_interpreter: /usr/bin/python3
+      ansible_user: ravi
+
   children:
-    linux:
-      children:
-        fedora:
-        ubuntu:
     ubuntu:
       hosts:
         localhost:
     fedora:
       hosts:
-        localhost:
-
+        inspiron:
+    linux:
+      children:
+        fedora:
+        ubuntu:

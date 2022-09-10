@@ -1,0 +1,34 @@
+---
+- hosts: linux
+  become: yes
+
+  vars:
+    rpms:
+      - podman
+      - podman-docker
+      - podman-compose
+      - podman-plugins
+      - podman-tui
+      # - libvirt-daemon-kvm
+
+    virt_group: libvirt
+
+  tasks:
+    - name: Install RPM packages
+      dnf:
+        name: "{{ rpms }}"
+        state: present
+
+    - name: Enable libvirt group
+      block:
+        - name: Create libvirt group
+          group:
+            name: "{{ virt_group }}"
+            state: present
+            system: yes
+
+        - name: Add user to the group
+          user:
+            name: "{{ ansible_user }}"
+            groups: "{{ virt_group }}"
+            append: yes

@@ -1,11 +1,6 @@
 ---
 - hosts: linux
-  gather_facts : yes
-
-  tasks:
-    - name: Load variables
-      include_vars:
-        file: config.yml
+  gather_facts: yes
 
 - import_playbook: ubuntu/setup.yml
   when: ansible_os_family == 'Debian'

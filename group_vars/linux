@@ -1,3 +1,6 @@
 ---
 graphical: yes
 desktop: gnome
+
+umask: "077"
+sudo_group: admin

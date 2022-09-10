@@ -1,20 +1,22 @@
 ---
+- import_playbook: machine.yml
+
+- import_playbook: virt.yml
+  when: (virtualization is defined) and (virtualization == True)
+
 - hosts: linux
   become: yes
   tasks:
-    - name: Configure machine
-      import_tasks: machine.yml
-
     - name: Add current user to the admin
       user:
         name: "{{ ansible_facts.env.SUDO_USER }}"
-        groups: "{{ machine.sudo_group }}"
+        groups: "{{ sudo_group | mandatory }}"
         append: yes
-
-    - name: Install and configure graphical tools
-      import_tasks: graphical.yml
-      when: graphical == true
 
     - name: Install and configure user specific tools
       become: no
       import_tasks: user.yml
+
+    - name: Install and configure graphical tools
+      import_tasks: graphical.yml
+      when: graphical == true

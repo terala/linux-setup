@@ -2,7 +2,7 @@
   include_vars: vars/zsh-config.yml
 
 - name: Configure zsh
-  become: no
+  become: yes
   block:
     - name: Clone znap
       git:
@@ -10,6 +10,7 @@
         dest: "{{ zsh.znap.path }}"
 
     - name: Deploy .zshrc
+      become: no
       template:
         src: ".zshrc.j2"
         dest: "~/.zshrc"

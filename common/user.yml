@@ -8,8 +8,8 @@
 - name: Configure vim
   include_tasks: vim.yml
 
-# - name: Configure zsh
-#   include_tasks: zsh.yml
+- name: Configure zsh
+  include_tasks: zsh.yml
 
 - name: Change current user's shell to zsh
   become: yes

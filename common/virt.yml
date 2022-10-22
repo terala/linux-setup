@@ -3,7 +3,7 @@
   become: yes
 
   vars:
-    rpms:
+    podman_rpms:
       - podman
       - podman-docker
       - podman-compose
@@ -11,13 +11,26 @@
       - podman-tui
       # - libvirt-daemon-kvm
 
+    podman_debs:
+      - podman
+      - podman-compose
+      - podman-docker
+      - podman-toolbox
+
     virt_group: libvirt
 
   tasks:
-    - name: Install RPM packages
+    - name: Install RPM packages for podman
       dnf:
-        name: "{{ rpms }}"
+        name: "{{ podman_rpms }}"
         state: present
+      when: ansible_os_family == 'Redhat'
+
+    - name: Install Deb package for podman
+      apt:
+        name: "{{ podman_debs }}"
+        state: present
+      when: ansible_os_family == 'Debian'
 
     - name: Enable libvirt group
       block:

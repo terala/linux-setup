@@ -81,15 +81,29 @@
             group: root
             mode: "u=rw,g=,o="
 
-    - debug:
-        var: avahi
-
     - name: Install avahi for MDNS advertisement
       block:
-        - name: Install avahi package
+        - name: Install avahi via dnf
+          vars:
+            avahi_dnf_list:
+              - avahi
+              - avahi-tools
+              - avahi-dnsconfd
           dnf:
-            name: avahi
+            name: "{{ avahi_dnf_list }}"
             state: present
+          when: ansible_os_family == 'Redhat'
+
+        - name: Install avahi via apt
+          vars:
+            avahi_apt_list:
+              - avahi-daemon
+              - avahi-dnsconfd
+              - avahi-utils
+          apt:
+            name: "{{ avahi_apt_list }}"
+            state: present
+          when: ansible_os_family == 'Debian'
 
         - name: Publish SSH and SFTP services for Avahi
           template:

@@ -19,15 +19,46 @@
     state: present
   when: desktop == "gnome" and ansible_distribution == "Fedora"
 
-- name: Configure Gnome
-  become: no
-  community.general.gconftool2:
-    key: "{{ item.key }}"
-    value: "{{ item.value }}"
-    value_type: "{{ item.value_type }}"
-    state: present
-  loop: "{{ gnome_conf }}"
-  when: desktop == "gnome"
+# - name: Configure Gnome
+#   become: no
+#   community.general.gconftool2:
+#     key: "{{ item.key }}"
+#     value: "{{ item.value }}"
+#     value_type: "{{ item.value_type }}"
+#     state: present
+#   loop: "{{ gnome_conf }}"
+#   when: desktop == "gnome"
+
+
+- name: Enable Wayland for apps
+  vars:
+    environ_dir: "~/.config/environment.d"
+  block:
+    - name: Create user's environment.d directory
+      become: no
+      file:
+        path: "{{ environ_dir }}"
+        state: directory
+        mode: u=rwx,go=
+
+    - name: Set user's environment variables to enable Wayland
+      become: no
+      template:
+        src: "wayland-profile.conf.j2"
+        dest: "{{ environ_dir }}/10-wayland-profile.conf"
+        mode: u=rw,go=
+
+    - name: Deploy Wayland specific desktop files
+      template:
+        src: "{{ item }}.j2"
+        dest: "/usr/share/applications/{{ item }}"
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+      loop:
+        - "Wayland-Code.desktop"
+        - "Wayland-Google-Chrome.desktop"
+
 
 - name: Install VSCode Repo
   block:

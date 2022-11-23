@@ -7,10 +7,13 @@
 
   tasks:
     - name: Use a safer umask default
-      blockinfile:
-        path: /etc/profile
-        block: |
-          umask {{ umask }}
+      lineinfile:
+        path: "{{ item }}"
+        regexp: "^session optional\\s+pam_umask.so$"
+        line: "session optional pam_umask.so umask={{ umask }}"
+      loop:
+        - /etc/pam.d/common-session
+        - /etc/pam.d/common-session-noninteractive
 
     - name: Deploy common aliases
       template:

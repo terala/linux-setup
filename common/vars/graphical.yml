@@ -8,6 +8,8 @@ ubuntu_gnome_pkgs:
   - vdpauinfo
   - mesa-vdpau-drivers
   - libvdpau-va-gl1
+  - dconf-editor
+  - qtwayland5  # Needed to get Wayland working for QT Apps
 
 fedora_gnome_pkgs:
   - GConf2
@@ -78,13 +80,16 @@ gnome_conf:
     value: "whiteglass"
     value_type: string
 
+font_versions:
+  iosevka: 16.3.6
+  juliamono: 0.046
 fonts:
   - name: Iosevka
-    url: https://github.com/be5invis/Iosevka/releases/download/v6.0.1/super-ttc-iosevka-slab-6.0.1.zip
+    url: "https://github.com/be5invis/Iosevka/releases/download/v{{ font_versions.iosevka }}/super-ttc-iosevka-slab-{{ font_versions.iosevka }}.zip"
     filename: iosevka-slab.ttc
     type: opentype
   - name: JuliaMono
-    url: https://github.com/cormullion/juliamono/blob/master/juliamono-ttf.zip?raw=true
+    url: "https://github.com/cormullion/juliamono/releases/download/v{{ font_versions.juliamono }}/JuliaMono-ttf.zip"
     filename: JuliaMono-Regular.ttf
     type: truetype
 
@@ -100,10 +105,12 @@ vscode_extensions:
   - ms-python.python
   - njpwerner.autodocstring
   # Ansible
-  - zbr.vscode-ansible
+  - redhat.ansible
   - MattiasBaake.vscode-snippets-for-ansible
   # Markdown
   - yzhang.markdown-all-in-one
   - shd101wyy.markdown-preview-enhanced
   - davidanson.vscode-markdownlint
   - bierner.markdown-mermaid
+  - bierner.markdown-preview-github-styles
+  - bpruitt-goddard.mermaid-markdown-syntax-highlighting

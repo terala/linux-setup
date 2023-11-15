@@ -6,6 +6,6 @@
   when: ansible_os_family == 'Debian'
 
 - import_playbook: fedora/setup.yml
-  when: ansible_os_family == 'Redhat'
+  when: ansible_os_family == 'RedHat'
 
 - import_playbook: common/setup.yml

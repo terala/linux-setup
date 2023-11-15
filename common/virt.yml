@@ -1,5 +1,6 @@
 ---
 - hosts: linux
+  gather_facts: true
   become: yes
 
   vars:
@@ -24,7 +25,7 @@
       dnf:
         name: "{{ podman_rpms }}"
         state: present
-      when: ansible_os_family == 'Redhat'
+      when: ansible_os_family == 'RedHat'
 
     - name: Install Deb package for podman
       apt:
@@ -42,6 +43,6 @@
 
         - name: Add user to the group
           user:
-            name: "{{ ansible_user }}"
+            name: "{{ ansible_env.USER }}"
             groups: "{{ virt_group }}"
             append: yes

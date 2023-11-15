@@ -1,0 +1,40 @@
+---
+- hosts: linux
+  become: yes
+
+  tasks:
+    - name: Install avahi via dnf
+      vars:
+        avahi_dnf_list:
+          - avahi
+          - avahi-tools
+          - avahi-dnsconfd
+      dnf:
+        name: "{{ avahi_dnf_list }}"
+        state: present
+      when: ansible_os_family == 'Redhat'
+
+    - name: Install avahi via apt
+      vars:
+        avahi_apt_list:
+          - avahi-daemon
+          - avahi-dnsconfd
+          - avahi-utils
+      apt:
+        name: "{{ avahi_apt_list }}"
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Publish SSH and SFTP services for Avahi
+      template:
+        src: avahi_ssh_sftp.service.j2
+        dest: /etc/avahi/services/ssh_sftp.service
+
+    - name: Enable avahi to start
+      systemd:
+        name: avahi-daemon
+        state: started
+        enabled: yes
+        masked: no
+        daemon_reload: yes
+

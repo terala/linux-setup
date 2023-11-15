@@ -3,31 +3,21 @@
 - name: Load variables for graphical tasks
   include_vars: vars/graphical.yml
 
-- name: Install fonts
-  include_tasks: install_font.yml
-  loop: "{{ fonts }}"
-
 - name: Install Gnome packages for Ubuntu
   apt:
     name: "{{ ubuntu_gnome_pkgs }}"
     state: present
   when: desktop == "gnome" and ansible_distribution == "Ubuntu"
 
-- name: Install Gnome packages for Fedora
-  dnf:
-    name: "{{ fedora_gnome_pkgs }}"
+- name: Configure Gnome
+  become: no
+  community.general.gconftool2:
+    key: "{{ item.key }}"
+    value: "{{ item.value }}"
+    value_type: "{{ item.value_type }}"
     state: present
-  when: desktop == "gnome" and ansible_distribution == "Fedora"
-
-# - name: Configure Gnome
-#   become: no
-#   community.general.gconftool2:
-#     key: "{{ item.key }}"
-#     value: "{{ item.value }}"
-#     value_type: "{{ item.value_type }}"
-#     state: present
-#   loop: "{{ gnome_conf }}"
-#   when: desktop == "gnome"
+  loop: "{{ gnome_conf }}"
+  when: desktop == "gnome"
 
 
 - name: Enable Wayland for apps
@@ -58,24 +48,6 @@
       loop:
         - "Wayland-Code.desktop"
         - "Wayland-Google-Chrome.desktop"
-
-
-- name: Install VSCode Repo
-  block:
-    - name: Install VSCode Yum repo
-      yum_repository:
-        name: visual-studio-code
-        description: Yum repo for Visual Studio Code
-        file: vscode.repo
-        baseurl: https://packages.microsoft.com/yumrepos/vscode
-        enabled: yes
-        gpgcheck: yes
-        gpgkey: https://packages.microsoft.com/keys/microsoft.asc
-    - name: Install Visual Studio Code
-      yum:
-        name: code
-        state: present
-  when: ansible_distribution == "Fedora"
 
 - name: Install VSCode extensions
   become: no

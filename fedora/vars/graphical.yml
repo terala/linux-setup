@@ -5,23 +5,59 @@ graphical_pkgs:
   - meld
   - vlc
   - vlc-extras
+  - mpv
+  - fonts-tweak-tool
+  - pipewire-v4l2
+  - pipewire-plugin-libcamera
+  - pipewire-plugin-vulkan
+  - libva
+  - libva-utils
+  # - libva-vdpau-driver
+  - libva-nvidia-driver
+  - intel-media-driver
+  - intel-mediasdk
+  - intel-opencl
+  - oneVPL-intel-gpu
+  - intel-gpu-firmware
+  - pipewire-codec-aptx
+  - intel-gpu-tools
+  - gstreamer1-vaapi
 
 gnome_pkgs:
   - gnome-calendar
   - gnome-dictionary
+  - gnome-tweaks
+  - gnome-extensions-app
   - gnome-shell-extension-netspeed
   - gnome-shell-extension-openweather
   - gnome-shell-extension-pop-shell
-  - gnome-tweaks
   - gnome-shell-extension-freon
   - gnome-shell-extension-system-monitor-applet
-  - gnome-extensions-app
-#  - gnome-authenticator
-#  - gnome-shell-extension-bluetooth-quick-connect
-#  - gnome-shell-extension-draw-on-your-screen
-#  - gnome-shell-extension-multi-monitors
-#  - gnome-shell-extension-weather
-  -
+  - gnome-multi-writer
+  - GConf2
+  - seahorse
+  - shotwell
+  - clapper
+
+freeworld_pkgs:
+  - mesa-va-drivers-freeworld
+  - libheif-freeworld
+  - gstreamer1-plugins-bad-freeworld
+  - gstreamer1-plugins-ugly
+  - mesa-vdpau-drivers-freeworld
+  - libavcodec-freeworld
+
+# Nautilus image support
+image_pkgs:
+  - webp-pixbuf-loader
+  - libopenraw-pixbuf-loader
+  - heif-pixbuf-loader
+  - avif-pixbuf-loader
+  - jxl-pixbuf-loader
+  - rsvg-pixbuf-loader
+  - libheif-freeworld
+  - libheif-tools
+  - libavif-tools
 
 extra_repos:
   - name: Chrome Repos

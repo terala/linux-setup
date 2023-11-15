@@ -6,7 +6,7 @@
       aliases_path: /etc/profile.d/aliases.sh
 
   tasks:
-    - name: Use a safer umask default
+    - name: Use a safer umask default for Debian distros
       lineinfile:
         path: "{{ item }}"
         regexp: "^session optional\\s+pam_umask.so$"
@@ -14,6 +14,17 @@
       loop:
         - /etc/pam.d/common-session
         - /etc/pam.d/common-session-noninteractive
+      when: ansible_os_family == 'Debian'
+
+    - name: Use a safer umask default for RedHat distros
+      lineinfile:
+        path: "{{ item }}"
+        regexp: "^session\\s+optional\\s+pam_umask.so"
+        line: "session optional pam_umask.so umask={{ umask }} silent"
+      loop:
+        - /etc/pam.d/postlogin
+      when: ansible_os_family == 'RedHat'
+
 
     - name: Deploy common aliases
       template:
@@ -22,13 +33,6 @@
 
     - name: Default shell and skel files for new users
       block:
-        - name: Enable zsh for all new users
-          lineinfile:
-            path: /etc/default/useradd
-            regexp: "^SHELL=.*$"
-            line: "SHELL=/usr/bin/zsh"
-            state: present
-
         - name: Enable skeleton files for all new users
           lineinfile:
             path: /etc/default/useradd
@@ -51,23 +55,6 @@
             src: global-.bashrc.j2
             dest: /etc/skel/.bashrc
 
-        - name: Load znap and zsh config
-          include_vars: vars/zsh-config.yml
-
-        - name: Clone znap
-          git:
-            repo: "{{ zsh.znap.url }}"
-            dest: "{{ zsh.znap.path }}"
-
-        - name: Deploy znap enabled .zshrc for all users
-          template:
-            src: ".zshrc.j2"
-            dest: "/etc/skel/.zshrc"
-
-        - name: Create .znap directory in skel
-          file:
-            path: /etc/skel/.znap
-            state: directory
 
     - name: Admin group for sudo access
       block:
@@ -84,40 +71,3 @@
             group: root
             mode: "u=rw,g=,o="
 
-    - name: Install avahi for MDNS advertisement
-      block:
-        - name: Install avahi via dnf
-          vars:
-            avahi_dnf_list:
-              - avahi
-              - avahi-tools
-              - avahi-dnsconfd
-          dnf:
-            name: "{{ avahi_dnf_list }}"
-            state: present
-          when: ansible_os_family == 'Redhat'
-
-        - name: Install avahi via apt
-          vars:
-            avahi_apt_list:
-              - avahi-daemon
-              - avahi-dnsconfd
-              - avahi-utils
-          apt:
-            name: "{{ avahi_apt_list }}"
-            state: present
-          when: ansible_os_family == 'Debian'
-
-        - name: Publish SSH and SFTP services for Avahi
-          template:
-            src: avahi_ssh_sftp.service.j2
-            dest: /etc/avahi/services/ssh_sftp.service
-
-        - name: Enable avahi to start
-          systemd:
-            name: avahi-daemon
-            state: started
-            enabled: yes
-            masked: no
-            daemon_reload: yes
-      when: (avahi is defined) and (avahi == True)

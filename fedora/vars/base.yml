@@ -7,11 +7,13 @@ base_pkgs:
   - ranger
   - tig
   - tmux
-#  - tmuxinator
   - zsh
   - powertop
   - vim-enhanced
-  - exa
+  - bluez-tools
+  # - rust-exa  # Enable later
+
+#  - tmuxinator
 
 rpmfusion_repos:
   - "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"

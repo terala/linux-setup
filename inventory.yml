@@ -15,10 +15,11 @@ all:
   children:
     ubuntu:
       hosts:
-        inspiron:
+        # inspiron:
         localhost:
     fedora:
       hosts:
+        localhost:
     linux:
       children:
         fedora:

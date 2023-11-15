@@ -11,14 +11,6 @@ ubuntu_gnome_pkgs:
   - dconf-editor
   - qtwayland5  # Needed to get Wayland working for QT Apps
 
-fedora_gnome_pkgs:
-  - GConf2
-  - libva
-  - libva-intel-driver
-  # - libva-intel-hybrid-driver
-  - libva-utils
-  - libva-vdpau-driver
-
 gnome_conf:
   - key: "/org/gnome/desktop/interface/clock-show-date"
     value: true

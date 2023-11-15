@@ -14,6 +14,9 @@
         enabled: yes
       loop: "{{ extra_repos }}"
 
+- debug:
+    var: gnome_pkgs
+
 - name: Install GNOME packages
   dnf:
     name: "{{ gnome_pkgs }}"
@@ -25,3 +28,28 @@
     name: "{{ graphical_pkgs }}"
     state: present
 
+- name: Install free world packages
+  dnf:
+    name: "{{ freeworld_pkgs }}"
+    state: present
+
+- name: Install additonal image support
+  dnf:
+    name: "{{ image_pkgs }}"
+    state: present
+  when: desktop == "gnome"
+
+- name: Install fonts
+  block:
+    - name: Install Iosevka Copr
+      community.general.copr:
+        name: peterwu/iosevka
+        state: enabled
+
+    - name: Install Iosevka fonts
+      dnf:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - iosevka-slab-fonts
+        - iosevka-curly-slab-fonts

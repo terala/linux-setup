@@ -1,6 +1,9 @@
 ---
 - import_playbook: machine.yml
 
+- import_playbook: avahi.yml
+  when: (avahi is defined) and (avahi == True)
+
 - import_playbook: virt.yml
   when: (virtualization is defined) and (virtualization == True)
 

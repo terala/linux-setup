@@ -15,7 +15,6 @@ all:
   children:
     ubuntu:
       hosts:
-        # inspiron:
         localhost:
     fedora:
       hosts:

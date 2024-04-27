@@ -1,6 +1,7 @@
 ---
 graphical_pkgs:
   - code
+  - foot
   - google-chrome-stable
   - meld
   - vlc
@@ -28,11 +29,6 @@ gnome_pkgs:
   - gnome-dictionary
   - gnome-tweaks
   - gnome-extensions-app
-  - gnome-shell-extension-netspeed
-  - gnome-shell-extension-openweather
-  - gnome-shell-extension-pop-shell
-  - gnome-shell-extension-freon
-  - gnome-shell-extension-system-monitor-applet
   - gnome-multi-writer
   - GConf2
   - seahorse

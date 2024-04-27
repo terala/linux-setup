@@ -1,0 +1,53 @@
+---
+- name: Initialize variables
+  include_vars: vars/iosevka.yml
+
+- name: Fetch the latest iosevka release
+  uri:
+    url: "{{ iosevka_releases_url }}"
+    method: GET
+  register: releases
+
+- name: Create fonts directory for iosevka
+  become: yes
+  file:
+    path: "{{ base_fonts_dir }}"
+    state: directory
+    mode: u=rwx,go=rx
+
+- name: Create directory for version
+  become: yes
+  vars:
+    full_tag: "{{ releases | community.general.json_query('json.tag_name') }}"
+  file:
+    path: "{{ base_fonts_dir }}/{{ full_tag }}"
+    state: directory
+    mode: u=rwx,go=rx
+
+- name: Fetch any existing files
+  vars:
+    full_tag: "{{ releases | community.general.json_query('json.tag_name') }}"
+    dirname: "{{ base_fonts_dir }}/{{ full_tag }}"
+  find:
+    path: "{{ dirname }}"
+    pattern: "*.ttc"
+    file_type: file
+  register: ttc_files
+
+- name: Download and install fonts
+  vars:
+    ttc_list: "{{ ttc_files.files  | flatten | map(attribute='path') }}"
+    mapped_list: "{{ ttc_list | map('regex_replace', rgx, replace) | list }}"
+    diff_list: "{{ iosevka_variants | difference(mapped_list) }}"
+    full_tag: "{{ releases | community.general.json_query('json.tag_name') }}"
+    version: "{{ full_tag[1:] }}"
+    fontname: "SuperTTC-{{ item }}-{{ version }}.zip"
+    query: "json.assets[?name=='{{ fontname }}']"
+    asset: "{{ releases | community.general.json_query(query) | first }}"
+  unarchive:
+    src: "{{ asset['browser_download_url'] }}"
+    dest: "{{ base_fonts_dir }}/{{ full_tag }}"
+    remote_src: yes
+    mode: ugo=r
+  register: fonts_installed
+  loop: "{{ diff_list }}"

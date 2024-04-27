@@ -46,7 +46,7 @@
         path: "~/.ssh/config"
         block: |
           Host *
-            ForwardX11              yes
+            ForwardX11              no
             ForwardAgent            yes
             Compression             yes
             StrictHostKeyChecking   no

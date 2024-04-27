@@ -1,40 +1,57 @@
 ---
 graphical_pkgs:
   - meld
+  - foot
   - vlc
 
 gnome_pkgs:
-  - gnome-tweaks
-#  - gnome-shell-extension-bluetooth-quick-connect
-  - gnome-shell-extension-manager
-  - gnome-shell-extension-desktop-icons-ng
-#  - gnome-shell-extension-draw-on-your-screen
-#  - gnome-shell-extension-freon
-#  - gnome-shell-extension-multi-monitors
-#  - gnome-shell-extension-system-monitor
-#  - gnome-shell-extension-weather
-  - gnome-dictionary
-  - gnome-calendar
-  - gnome-authenticator
+  #  - gnome-photos
   - gnome-applets
+  - gnome-authenticator
+  - gnome-calculator
+  - gnome-calendar
+  - gnome-clocks
+  - gnome-console
   - gnome-contacts
+  - gnome-dictionary
   - gnome-firmware
+  - gnome-keyring
   - gnome-maps
-  - gnome-photos
   - gnome-software
   - gnome-software-plugin-snap
+  - gnome-tweaks
+  - gnome-text-editor
+  - gnome-remote-desktop
+  - gnome-weather
+  - gnome-shell-extension-manager
 
+gnome_shell_extensioons:
+  - compiz-windows-effect@hermes83.github.com
+  - Vitals@CoreCoding.com
+  - user-theme@gnome-shell-extensions.gcampax.github.com
+  - lan-ip-address@mrhuber.com
+  - bluetooth-quick-connect@bjarosze.gmail.com
+  - uptime-indicator@gniourfgniourf.gmail.com
+  - wireless-hid@chlumskyvaclav.gmail.com
+  - ding@rastersoft.com
+  - gravatar@dsheeler.net
 
+# Nautilus image support
+image_pkgs:
+  - heif-gdk-pixbuf
+  - webp-pixbuf-loader
+  - libavif-gdk-pixbuf
+  - gtk2-engines-pixbuf
+  - libextractor-plugin-thumbnailgtk
 
 extra_sources:
-  - name: Chrome
-    deb_line: "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main"
-    pkg: google-chrome-stable
-    key: https://dl.google.com/linux/linux_signing_key.pub
-    filename: google-chrome
+  #  - name: Chrome
+  #  deb_line: "deb https://dl.google.com/linux/chrome/deb/ stable main"
+  #  pkg: google-chrome-stable
+  #  key: https://dl.google.com/linux/linux_signing_key.pub
+  #  filename: google-chrome
   - name: Visual Studio Code
-    deb_line: "deb [arch=amd64] https://packages.microsoft.com/repos/code stable main"
+    deb_line: "deb https://packages.microsoft.com/repos/code stable main"
     pkg: code
     key: https://packages.microsoft.com/keys/microsoft.asc
     filename: vscode
-

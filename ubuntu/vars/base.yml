@@ -1,15 +1,14 @@
 ---
 base_pkgs:
   - apt-transport-https
+  - btop
   - curl
   - fzf
   - git
-  - htop
-  - ranger
+  - lf
+  - powertop
   - tig
   - tmux
   - tmuxinator
-  - zsh
-  - powertop
-  - exa
   - vim
+  - zsh

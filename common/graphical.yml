@@ -1,5 +1,4 @@
 ---
-
 - name: Load variables for graphical tasks
   include_vars: vars/graphical.yml
 
@@ -11,14 +10,34 @@
 
 - name: Configure Gnome
   become: no
-  community.general.gconftool2:
+  community.general.dconf:
     key: "{{ item.key }}"
     value: "{{ item.value }}"
-    value_type: "{{ item.value_type }}"
     state: present
   loop: "{{ gnome_conf }}"
   when: desktop == "gnome"
 
+- name: Install Ubuntu HW video drivers
+  apt:
+    name: "{{ x64_ubuntu_video_driver_pkgs }}"
+    state: present
+  when: ansible_distribution == "Ubuntu" and ansible_architecture == "x86_64"
+
+- name: Configure foot.ini for all user
+  vars:
+    foot_dir: "/etc/xdg/foot"
+  block:
+    - name: Create directory
+      file:
+        path: "{{ foot_dir }}"
+        state: directory
+        mode: u=rwx,go=rx
+
+    - name: Deploy foot.ini
+      template:
+        src: "foot.ini.j2"
+        dest: "{{ foot_dir }}/foot.ini"
+        mode: ugo=r
 
 - name: Enable Wayland for apps
   vars:

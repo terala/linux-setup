@@ -8,3 +8,7 @@
     - name: Install graphical packages
       import_tasks: graphical.yml
       when: graphical == true
+
+    - name: Install Iosevka fonts
+      import_tasks: iosevka-font.yml
+      when: graphical == true

@@ -1,5 +1,4 @@
 ---
 graphical: true
-avahi: false
+avahi: true
 virtualization: true
-

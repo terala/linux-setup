@@ -1,6 +1,9 @@
 ---
 ubuntu_gnome_pkgs:
-  - gconf2
+  - dconf-editor
+  - qt6-wayland # Needed to get Wayland working for QT Apps
+
+x64_ubuntu_video_driver_pkgs:
   - libva2
   - intel-media-va-driver
   - intel-media-va-driver-non-free
@@ -8,8 +11,6 @@ ubuntu_gnome_pkgs:
   - vdpauinfo
   - mesa-vdpau-drivers
   - libvdpau-va-gl1
-  - dconf-editor
-  - qtwayland5  # Needed to get Wayland working for QT Apps
 
 gnome_conf:
   - key: "/org/gnome/desktop/interface/clock-show-date"
@@ -22,7 +23,7 @@ gnome_conf:
     value: true
     value_type: bool
   - key: "/org/gnome/desktop/interface/clock-format"
-    value: "12h"
+    value: "'12h'"
     value_type: string
   - key: "/org/gnome/desktop/datetime/automatic-timezone"
     value: true
@@ -37,7 +38,7 @@ gnome_conf:
     value: true
     value_type: bool
   - key: "/org/gnome/gedit/preferences/editor/editor-font"
-    value: "Iosevka Term Slab 13"
+    value: "'Iosevka Term Slab 13'"
     value_type: string
   - key: "/org/gnome.gedit/preferences/editor/insert-spaces"
     value: true
@@ -56,28 +57,28 @@ gnome_conf:
     value_type: bool
   # Fonts
   - key: "/org/gnome/desktop/interface/font-antialiasing"
-    value: "subpixel"
+    value: "'rgba'"
     value_type: string
   - key: "/org/gnome/desktop/interface/monospace-font-name"
-    value: "Iosevka Fixed Slab Light 13"
+    value: "'Iosevka Fixed Slab Light 13'"
     value_type: string
   # Gnome-themes
   - key: "/org/gnome/desktop/interface/gtk-theme"
-    value: "Adwaita"
+    value: "'Adwaita'"
     value_type: string
   - key: "/org/gnome/desktop/interface/icon-theme"
-    value: "Adwaita"
+    value: "'Adwaita'"
     value_type: string
   - key: "/org/gnome/desktop/interface/cursor-theme"
-    value: "whiteglass"
+    value: "'Adwaita'"
     value_type: string
 
 font_versions:
-  iosevka: 16.3.6
+  iosevka: 29.2.0
   juliamono: 0.046
 fonts:
   - name: Iosevka
-    url: "https://github.com/be5invis/Iosevka/releases/download/v{{ font_versions.iosevka }}/super-ttc-iosevka-slab-{{ font_versions.iosevka }}.zip"
+    url: "https://github.com/be5invis/Iosevka/releases/download/v{{ font_versions.iosevka }}/SuperTTC-IosevkaSlab-{{ font_versions.iosevka }}.zip"
     filename: iosevka-slab.ttc
     type: opentype
   - name: JuliaMono

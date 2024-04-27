@@ -8,6 +8,12 @@
     state: present
   when: desktop == "gnome"
 
+- name: Install Nautilus image helpers
+  apt:
+    name: "{{ image_pkgs }}"
+    state: present
+  when: desktop == "gnome"
+
 - name: Install packages from extra sources
   block:
     - name: Import key
@@ -28,4 +34,3 @@
         name: "{{ item.pkg }}"
         state: present
       loop: "{{ extra_sources }}"
-

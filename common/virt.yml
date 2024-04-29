@@ -8,10 +8,7 @@
       - podman
       - podman-docker
       - podman-compose
-      - podman-plugins
       - podman-tui
-      # - libvirt-daemon-kvm
-
     podman_debs:
       - podman
       - podman-compose

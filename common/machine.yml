@@ -1,13 +1,14 @@
 ---
-- hosts: linux
-  become: yes
+- name: Machine wide tasks
+  hosts: linux
+  become: true
   vars:
     machine:
       aliases_path: /etc/profile.d/aliases.sh
 
   tasks:
     - name: Use a safer umask default for Debian distros
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: "{{ item }}"
         regexp: "^session optional\\s+pam_umask.so$"
         line: "session optional pam_umask.so umask={{ umask }}"
@@ -17,7 +18,7 @@
       when: ansible_os_family == 'Debian'
 
     - name: Use a safer umask default for RedHat distros
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: "{{ item }}"
         regexp: "^session\\s+optional\\s+pam_umask.so"
         line: "session optional pam_umask.so umask={{ umask }} silent"
@@ -27,47 +28,48 @@
 
 
     - name: Deploy common aliases
-      template:
+      ansible.builtin.template:
         src: aliases.sh.j2
         dest: "{{ machine.aliases_path }}"
+        mode: u=rw,go=r
 
     - name: Default shell and skel files for new users
       block:
         - name: Enable skeleton files for all new users
-          lineinfile:
+          ansible.builtin.lineinfile:
             path: /etc/default/useradd
             regexp: ^[# ]*SKEL=(.*)$
             line: SKEL=\g<1>
             state: present
-            backrefs: yes
+            backrefs: true
 
         - name: Load tmux file configuration
-          include_vars: vars/tmux-config.yml
+          ansible.builtin.include_vars: vars/tmux-config.yml
 
         - name: Deploy tmux configuration for all new users
-          get_url:
+          ansible.builtin.get_url:
             url: "{{ item.url }}"
             dest: "/etc/skel/{{ item.filename }}"
+            mode: u=rw,go=r
           loop: "{{ tmux.files }}"
 
         - name: Enable bash completion for all new users
-          template:
+          ansible.builtin.template:
             src: global-.bashrc.j2
             dest: /etc/skel/.bashrc
-
+            mode: u=rw,go=r
 
     - name: Admin group for sudo access
       block:
         - name: Create admin group
-          group:
+          ansible.builtin.group:
             name: "{{ sudo_group | mandatory }}"
             state: present
 
         - name: Deploy sudoers file
-          template:
+          ansible.builtin.template:
             src: admin.sudo.j2
             dest: "/etc/sudoers.d/{{ sudo_group | mandatory }}"
             owner: root
             group: root
-            mode: "u=rw,g=,o="
-
+            mode: "u=rw"

@@ -4,19 +4,29 @@ vim:
   bundles:
     - name: fzf
       url: https://github.com/junegunn/fzf.vim.git
+      branch: master
     - name: ctrlpvim
       url: https://github.com/ctrlpvim/ctrlp.vim.git
+      branch: master
     - name: nerdtree
       url: https://github.com/preservim/nerdtree.git
+      branch: master
     - name: vim-airline
       url: https://github.com/vim-airline/vim-airline.git
+      branch: master
     - name: vim-floaterm
       url: https://github.com/voldikss/vim-floaterm.git
+      branch: master
     - name: vim-fugitive
       url: https://github.com/tpope/vim-fugitive.git
+      branch: master
     - name: vim-gitgutter
       url: https://github.com/airblade/vim-gitgutter.git
+      branch: main
     - name: vim-go
       url: https://github.com/fatih/vim-go.git
+      branch: master
     - name: bufexplorer
       url: https://github.com/jlanzarotta/bufexplorer.git
+      branch: master
+

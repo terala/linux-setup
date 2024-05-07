@@ -1,10 +1,11 @@
 ---
-- hosts: fedora
-  become: yes
+- name: Fedore setup
+  hosts: fedora
+  become: true
   tasks:
     - name: Install base packages
-      import_tasks: base.yml
+      ansible.builtin.import_tasks: base.yml
 
     - name: Install graphical packages
-      import_tasks: graphical.yml
-      when: graphical == true
+      ansible.builtin.import_tasks: graphical.yml
+      when: graphical

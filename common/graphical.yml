@@ -1,15 +1,15 @@
 ---
 - name: Load variables for graphical tasks
-  include_vars: vars/graphical.yml
+  ansible.builtin.include_vars: vars/graphical.yml
 
 - name: Install Gnome packages for Ubuntu
-  apt:
+  ansible.builtin.apt:
     name: "{{ ubuntu_gnome_pkgs }}"
     state: present
   when: desktop == "gnome" and ansible_distribution == "Ubuntu"
 
 - name: Configure Gnome
-  become: no
+  become: false
   community.general.dconf:
     key: "{{ item.key }}"
     value: "{{ item.value }}"
@@ -18,7 +18,7 @@
   when: desktop == "gnome"
 
 - name: Install Ubuntu HW video drivers
-  apt:
+  ansible.builtin.apt:
     name: "{{ x64_ubuntu_video_driver_pkgs }}"
     state: present
   when: ansible_distribution == "Ubuntu" and ansible_architecture == "x86_64"
@@ -28,13 +28,13 @@
     foot_dir: "/etc/xdg/foot"
   block:
     - name: Create directory
-      file:
+      ansible.builtin.file:
         path: "{{ foot_dir }}"
         state: directory
         mode: u=rwx,go=rx
 
     - name: Deploy foot.ini
-      template:
+      ansible.builtin.template:
         src: "foot.ini.j2"
         dest: "{{ foot_dir }}/foot.ini"
         mode: ugo=r
@@ -44,43 +44,44 @@
     environ_dir: "~/.config/environment.d"
   block:
     - name: Create user's environment.d directory
-      become: no
-      file:
+      become: false
+      ansible.builtin.file:
         path: "{{ environ_dir }}"
         state: directory
         mode: u=rwx,go=
 
     - name: Set user's environment variables to enable Wayland
-      become: no
-      template:
+      become: false
+      ansible.builtin.template:
         src: "wayland-profile.conf.j2"
         dest: "{{ environ_dir }}/10-wayland-profile.conf"
         mode: u=rw,go=
 
     - name: Deploy Wayland specific desktop files
-      template:
+      ansible.builtin.template:
         src: "{{ item }}.j2"
         dest: "/usr/share/applications/{{ item }}"
         owner: root
         group: root
-        mode: u=rw,g=r,o=r
+        mode: u=rw,go=r
       loop:
         - "Wayland-Code.desktop"
         - "Wayland-Google-Chrome.desktop"
 
 - name: Install VSCode extensions
-  become: no
+  become: false
   block:
     - name: Query installed extensions
-      command:
+      ansible.builtin.command:
         argv:
           - code
           - --list-extensions
       register: list_extensions_output
-    - set_fact:
+    - name: Find the list of extensions to be installed
+      ansible.builtin.set_fact:
         to_be_installed: "{{ vscode_extensions | difference(list_extensions_output.stdout_lines | lower) }}"
     - name: Install VSCode extensions
-      command:
+      ansible.builtin.command:
         argv:
           - code
           - --install-extension

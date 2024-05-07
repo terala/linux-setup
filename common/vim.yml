@@ -1,32 +1,37 @@
 ---
 
 - name: Load vim configuration
-  include_vars: vars/vim-config.yml
+  ansible.builtin.include_vars: vars/vim-config.yml
 
 - name: Configure vim
-  become: no
+  become: false
   block:
     - name: Create directories needed for vim
-      file:
+      ansible.builtin.file:
         name: "{{ item }}"
         state: directory
+        mode: u=rwx
       loop:
         - "~/.vim"
         - "~/.vim/autoload"
         - "~/.vim/bundle"
 
     - name: Deploy .vimrc
-      template:
+      ansible.builtin.template:
         src: ".vimrc.j2"
         dest: "~/.vimrc"
+        mode: u=rw
 
     - name: Deploy pathogen
-      get_url:
+      ansible.builtin.get_url:
         url: "{{ vim.pathogen_url }}"
         dest: "~/.vim/autoload/pathogen.vim"
+        mode: u=rw
 
     - name: Deploy bundles
-      git:
+      ansible.builtin.git:
         repo: "{{ item.url }}"
         dest: "~/.vim/bundle/{{ item.name }}"
+        version: "{{ item.branch }}"
       loop: "{{ vim.bundles }}"
+

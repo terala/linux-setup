@@ -1,9 +1,8 @@
 ---
 - name: Initialize install set
-  include_vars: vars/base.yml
+  ansible.builtin.include_vars: vars/base.yml
 
 - name: Install base packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ base_pkgs }}"
     state: present
-

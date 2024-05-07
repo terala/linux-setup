@@ -1,6 +1,7 @@
 ---
-- hosts: linux
-  become: yes
+- name: Avahi tasks
+  hosts: linux
+  become: true
 
   tasks:
     - name: Install avahi via dnf
@@ -9,32 +10,32 @@
           - avahi
           - avahi-tools
           - avahi-dnsconfd
-      dnf:
+      ansible.builtin.dnf:
         name: "{{ avahi_dnf_list }}"
         state: present
       when: ansible_os_family == 'Redhat'
 
-    - name: Install avahi via apt
+    - name: Install avahi via ansible.builtin.apt
       vars:
         avahi_apt_list:
           - avahi-daemon
           - avahi-dnsconfd
           - avahi-utils
-      apt:
+      ansible.builtin.apt:
         name: "{{ avahi_apt_list }}"
         state: present
       when: ansible_os_family == 'Debian'
 
     - name: Publish SSH and SFTP services for Avahi
-      template:
+      ansible.builtin.template:
         src: avahi_ssh_sftp.service.j2
         dest: /etc/avahi/services/ssh_sftp.service
+        mode: u=rw,go=r
 
     - name: Enable avahi to start
-      systemd:
+      ansible.builtin.systemd:
         name: avahi-daemon
         state: started
-        enabled: yes
-        masked: no
-        daemon_reload: yes
-
+        enabled: true
+        masked: false
+        daemon_reload: true

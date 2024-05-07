@@ -4,13 +4,6 @@ all:
     localhost:
       ansible_connection: local
       ansible_host: localhost
-    inspiron:
-      ansible_host: inspiron.local
-      ansible_python_interpreter: /usr/bin/python3
-      ansible_user: ravi
-    router:
-      ansible_host: 172.16.1.1
-      ansible_user: root
 
   children:
     ubuntu:
@@ -23,6 +16,3 @@ all:
       children:
         fedora:
         ubuntu:
-    openwrt:
-      hosts:
-        router:

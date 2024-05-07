@@ -1,5 +1,5 @@
 ---
-graphical: yes
+graphical: true
 desktop: gnome
 
 umask: "077"

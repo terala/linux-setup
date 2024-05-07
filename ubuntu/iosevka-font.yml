@@ -1,25 +1,25 @@
 ---
 - name: Initialize variables
-  include_vars: vars/iosevka.yml
+  ansible.builtin.include_vars: vars/iosevka.yml
 
 - name: Fetch the latest iosevka release
-  uri:
+  ansible.builtin.uri:
     url: "{{ iosevka_releases_url }}"
     method: GET
   register: releases
 
 - name: Create fonts directory for iosevka
-  become: yes
-  file:
+  become: true
+  ansible.builtin.file:
     path: "{{ base_fonts_dir }}"
     state: directory
     mode: u=rwx,go=rx
 
 - name: Create directory for version
-  become: yes
+  become: true
   vars:
     full_tag: "{{ releases | community.general.json_query('json.tag_name') }}"
-  file:
+  ansible.builtin.file:
     path: "{{ base_fonts_dir }}/{{ full_tag }}"
     state: directory
     mode: u=rwx,go=rx
@@ -28,7 +28,7 @@
   vars:
     full_tag: "{{ releases | community.general.json_query('json.tag_name') }}"
     dirname: "{{ base_fonts_dir }}/{{ full_tag }}"
-  find:
+  ansible.builtin.find:
     path: "{{ dirname }}"
     pattern: "*.ttc"
     file_type: file
@@ -36,7 +36,9 @@
 
 - name: Download and install fonts
   vars:
-    ttc_list: "{{ ttc_files.files  | flatten | map(attribute='path') }}"
+    rgx: ".zip"
+    replace: ""
+    ttc_list: "{{ ttc_files.files | flatten | map(attribute='path') }}"
     mapped_list: "{{ ttc_list | map('regex_replace', rgx, replace) | list }}"
     diff_list: "{{ iosevka_variants | difference(mapped_list) }}"
     full_tag: "{{ releases | community.general.json_query('json.tag_name') }}"
@@ -44,10 +46,10 @@
     fontname: "SuperTTC-{{ item }}-{{ version }}.zip"
     query: "json.assets[?name=='{{ fontname }}']"
     asset: "{{ releases | community.general.json_query(query) | first }}"
-  unarchive:
+  ansible.builtin.unarchive:
     src: "{{ asset['browser_download_url'] }}"
     dest: "{{ base_fonts_dir }}/{{ full_tag }}"
-    remote_src: yes
+    remote_src: true
     mode: ugo=r
   register: fonts_installed
   loop: "{{ diff_list }}"

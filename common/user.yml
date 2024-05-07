@@ -1,27 +1,27 @@
 ---
 - name: Import variables
-  include_vars: vars/user-config.yml
+  ansible.builtin.include_vars: vars/user-config.yml
 
 - name: Configure tmux
-  include_tasks: tmux.yml
+  ansible.builtin.include_tasks: tmux.yml
 
 - name: Configure vim
-  include_tasks: vim.yml
+  ansible.builtin.include_tasks: vim.yml
 
 - name: Configure zsh
-  include_tasks: zsh.yml
+  ansible.builtin.include_tasks: zsh.yml
 
 - name: Change current user's shell to zsh
-  become: yes
-  user:
+  become: true
+  ansible.builtin.user:
     name: "{{ ansible_facts.env.SUDO_USER }}"
     shell: /usr/bin/zsh
 
 - name: Setup common ssh options
-  become: no
+  become: false
   block:
     - name: Create .ssh directory
-      file:
+      ansible.builtin.file:
         path: "{{ item }}"
         state: directory
         mode: "u=rwx,go="
@@ -30,19 +30,19 @@
         - "~/.ssh/multiplex"
 
     - name: Check if ~/.ssh/config exists
-      stat:
+      ansible.builtin.stat:
         path: "~/.ssh/config"
       register: ssh_config
 
     - name: Create ~/.ssh/config
-      file:
+      ansible.builtin.file:
         path: "~/.ssh/config"
         state: touch
         mode: "u=rw,go="
-      when: ssh_config.stat.exists == false
+      when: not ssh_config.stat.exists
 
     - name: Add common ssh options
-      blockinfile:
+      ansible.builtin.blockinfile:
         path: "~/.ssh/config"
         block: |
           Host *

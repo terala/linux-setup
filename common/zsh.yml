@@ -1,41 +1,46 @@
 - name: Load zsh configuration
-  include_vars: vars/zsh-config.yml
+  ansible.builtin.include_vars: vars/zsh-config.yml
 
 - name: Configure zsh
-  become: yes
+  become: true
   block:
     - name: Clone znap
-      git:
+      ansible.builtin.git:
         repo: "{{ zsh.znap.url }}"
         dest: "{{ zsh.znap.path }}"
+        version: main
 
     - name: Deploy .zshrc
-      become: no
-      template:
+      become: false
+      ansible.builtin.template:
         src: ".zshrc.j2"
         dest: "~/.zshrc"
+        mode: u=rw
 
     - name: Enable zsh for all new users
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: /etc/default/useradd
         regexp: "^SHELL=.*$"
         line: "SHELL=/usr/bin/zsh"
         state: present
 
     - name: Load znap and zsh config
-      include_vars: vars/zsh-config.yml
+      ansible.builtin.include_vars: vars/zsh-config.yml
 
     - name: Clone znap
-      git:
+      ansible.builtin.git:
         repo: "{{ zsh.znap.url }}"
         dest: "{{ zsh.znap.path }}"
+        version: main
 
     - name: Deploy znap enabled .zshrc for all users
-      template:
+      ansible.builtin.template:
         src: ".zshrc.j2"
         dest: "/etc/skel/.zshrc"
+        mode: u=rw,go=r
 
     - name: Create .znap directory in skel
-      file:
+      ansible.builtin.file:
         path: /etc/skel/.znap
         state: directory
+        mode: u=rw,go=r

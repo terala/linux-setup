@@ -1,14 +1,15 @@
 ---
-- hosts: ubuntu
-  become: yes
+- name: Ubuntu setup
+  hosts: ubuntu
+  become: true
   tasks:
     - name: Install base packages
-      import_tasks: base.yml
+      ansible.builtin.import_tasks: base.yml
 
     - name: Install graphical packages
-      import_tasks: graphical.yml
-      when: graphical == true
+      ansible.builtin.import_tasks: graphical.yml
+      when: graphical
 
     - name: Install Iosevka fonts
-      import_tasks: iosevka-font.yml
-      when: graphical == true
+      ansible.builtin.import_tasks: iosevka-font.yml
+      when: graphical

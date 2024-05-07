@@ -1,14 +1,14 @@
 ---
 - name: Initialize install set
-  include_vars: vars/base.yml
+  ansible.builtin.include_vars: vars/base.yml
 
 - name: Install RPM Fusion repos
-  dnf:
+  ansible.builtin.dnf:
     name: "{{ rpmfusion_repos }}"
     state: present
-    disable_gpg_check: yes
+    disable_gpg_check: true
 
 - name: Install base packages
-  dnf:
+  ansible.builtin.dnf:
     name: "{{ base_pkgs }}"
     state: present

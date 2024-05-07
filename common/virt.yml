@@ -1,7 +1,8 @@
 ---
-- hosts: linux
+- name: Setup (virtualization
+  hosts: linux
   gather_facts: true
-  become: yes
+  become: true
 
   vars:
     podman_rpms:
@@ -19,13 +20,13 @@
 
   tasks:
     - name: Install RPM packages for podman
-      dnf:
+      ansible.builtin.dnf:
         name: "{{ podman_rpms }}"
         state: present
       when: ansible_os_family == 'RedHat'
 
     - name: Install Deb package for podman
-      apt:
+      ansible.builtin.apt:
         name: "{{ podman_debs }}"
         state: present
       when: ansible_os_family == 'Debian'
@@ -33,13 +34,13 @@
     - name: Enable libvirt group
       block:
         - name: Create libvirt group
-          group:
+          ansible.builtin.group:
             name: "{{ virt_group }}"
             state: present
-            system: yes
+            system: true
 
         - name: Add user to the group
-          user:
+          ansible.builtin.user:
             name: "{{ ansible_env.USER }}"
             groups: "{{ virt_group }}"
-            append: yes
+            append: true

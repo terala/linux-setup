@@ -1,11 +1,15 @@
 ---
-- hosts: linux
-  gather_facts: yes
+- name: Main setup
+  hosts: linux
+  gather_facts: true
 
-- import_playbook: ubuntu/setup.yml
+- name: Import Ubuntu Setup tasks
+  import_playbook: ubuntu/setup.yml
   when: ansible_os_family == 'Debian'
 
-- import_playbook: fedora/setup.yml
+- name: Import Fedora Setup tasks
+  import_playbook: fedora/setup.yml
   when: ansible_os_family == 'RedHat'
 
-- import_playbook: common/setup.yml
+- name: Import Commmon Setup tasks
+  import_playbook: common/setup.yml

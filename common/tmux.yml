@@ -1,22 +1,23 @@
 ---
 - name: Load tmux configuration
-  include_vars: vars/tmux-config.yml
+  ansible.builtin.include_vars: vars/tmux-config.yml
 
 - name: Install tmux initial configuration files
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ item.url }}"
     dest: "~/{{ item.filename }}"
+    mode: u=rw
   loop: "{{ tmux.files }}"
 
 - name: Customize .tmux.local.conf
-  replace:
+  ansible.builtin.replace:
     path: "~/.tmux.local.conf"
     regexp: "{{ item.regexp }}"
     replace: "{{ item.line }}"
   loop: "{{ tmux.config }}"
 
 - name: Enable powerline customizations for tmux
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: "~/.tmux.local.conf"
     block: "{{ tmux.theme_block }}"
     marker: "# theme-{mark} ANSIBLE MANAGED BLOCK"

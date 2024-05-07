@@ -2,6 +2,8 @@
 ubuntu_gnome_pkgs:
   - dconf-editor
   - qt6-wayland # Needed to get Wayland working for QT Apps
+  - foot
+  - foot-themes
 
 x64_ubuntu_video_driver_pkgs:
   - libva2
@@ -37,6 +39,12 @@ gnome_conf:
   - key: "/org/gnome/file-roller/ui/view-sidebar"
     value: true
     value_type: bool
+  - key: "/org/gnome/desktop/peripherals/mouse/natural-scroll"
+    value: true
+    value_type: bool
+  - key: "/org/gnome/desktop/peripherals/touchpad/natural-scroll"
+    value: true
+    value_type: bool
   - key: "/org/gnome/gedit/preferences/editor/editor-font"
     value: "'Iosevka Term Slab 13'"
     value_type: string
@@ -58,6 +66,9 @@ gnome_conf:
   # Fonts
   - key: "/org/gnome/desktop/interface/font-antialiasing"
     value: "'rgba'"
+    value_type: string
+  - key: "/org/gnome/desktop/interface/font-hinting"
+    value: "'full'"
     value_type: string
   - key: "/org/gnome/desktop/interface/monospace-font-name"
     value: "'Iosevka Fixed Slab Light 13'"

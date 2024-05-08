@@ -1,21 +1,20 @@
 - name: Load zsh configuration
   ansible.builtin.include_vars: vars/zsh-config.yml
 
-- name: Configure zsh
+- name: Configure zsh and znap for all users
   become: true
   block:
+    - name: Delete old znap installations
+      ansible.builtin.file:
+        path: "/etc/znap"
+        state: absent
+
     - name: Clone znap
       ansible.builtin.git:
         repo: "{{ zsh.znap.url }}"
         dest: "{{ zsh.znap.path }}"
         version: main
-
-    - name: Deploy .zshrc
-      become: false
-      ansible.builtin.template:
-        src: ".zshrc.j2"
-        dest: "~/.zshrc"
-        mode: u=rw
+        umask: "0022"
 
     - name: Enable zsh for all new users
       ansible.builtin.lineinfile:
@@ -23,15 +22,6 @@
         regexp: "^SHELL=.*$"
         line: "SHELL=/usr/bin/zsh"
         state: present
-
-    - name: Load znap and zsh config
-      ansible.builtin.include_vars: vars/zsh-config.yml
-
-    - name: Clone znap
-      ansible.builtin.git:
-        repo: "{{ zsh.znap.url }}"
-        dest: "{{ zsh.znap.path }}"
-        version: main
 
     - name: Deploy znap enabled .zshrc for all users
       ansible.builtin.template:
@@ -44,3 +34,17 @@
         path: /etc/skel/.znap
         state: directory
         mode: u=rw,go=r
+
+- name: Deploy znap for user
+  become: false
+  block:
+    - name: Delete old znap config for user
+      ansible.builtin.file:
+        path: "~/.znap"
+        state: absent
+
+    - name: Deploy .zshrc
+      ansible.builtin.template:
+        src: ".zshrc.j2"
+        dest: "~/.zshrc"
+        mode: u=rw

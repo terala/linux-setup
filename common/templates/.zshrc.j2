@@ -1,8 +1,6 @@
 # Load via znap
-zstyle ':znap:*' repos-dir ~/.znap
+zstyle ':znap:*' repos-dir {{ zsh.znap.repos_dir }}
 source {{ zsh.znap.path }}/znap.zsh
-
-
 
 # Load plugins
 # For oh-my-zsh and related themes
@@ -10,6 +8,11 @@ znap source ohmyzsh/ohmyzsh lib/{git,theme-and-appearance}
 
 {% for pl in zsh.plugins %}
 znap source {{ pl }}
+{% endfor %}
+
+# Install ohmyzsh plugins
+{% for pl in zsh.oh_my_zsh_plugins %}
+znap source ohmyzsh plugins/{{ pl }}
 {% endfor %}
 
 # Standard zsh options

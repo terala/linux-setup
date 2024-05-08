@@ -2,5 +2,5 @@
 graphical: true
 desktop: gnome
 
-umask: "077"
+umask: "0077"
 sudo_group: admin

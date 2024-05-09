@@ -77,9 +77,18 @@
           - code
           - --list-extensions
       register: list_extensions_output
+      changed_when: false
+      failed_when: list_extensions_output.rc != 0
+
+    - name: Prep lists
+      ansible.builtin.set_fact:
+        lower_installed: "{{ list_extensions_output.stdout_lines | lower }}"
+        lower_to_list: "{{ vscode_extensions | lower }}"
+
     - name: Find the list of extensions to be installed
       ansible.builtin.set_fact:
-        to_be_installed: "{{ vscode_extensions | difference(list_extensions_output.stdout_lines | lower) }}"
+        to_be_installed: "{{ lower_to_list | difference(lower_installed) }}"
+
     - name: Install VSCode extensions
       ansible.builtin.command:
         argv:

@@ -98,19 +98,38 @@ fonts:
     type: truetype
 
 vscode_extensions:
-  - mhutchie.git-graph
   - editorconfig.editorconfig
   - eamodio.gitlens
+  - mhutchie.git-graph
+  - waderyan.gitblame
+
   - oderwat.indent-rainbow
+  - codeium.codeium
+  - hbenl.vscode-test-explorer
+  - tamasfe.even-better-toml
+  - yokawasa.jwt-debugger
+
   # Utils
   - mitchdenny.ecdc
+  - mechatroner.rainbow-csv
+  - andyyaldoo.vscode-json
+
+  # Golang
   - golang.go
+  - defaltd.go-coverage-viewer
+  - premparihar.gotestexplorer
+
   # Python related
   - ms-python.python
+  - ms-python.black-formatter
   - njpwerner.autodocstring
+  - cameron.vscode-pytest
+
   # Ansible
   - redhat.ansible
   - MattiasBaake.vscode-snippets-for-ansible
+  - wholroyd.jinja
+
   # Markdown
   - yzhang.markdown-all-in-one
   - shd101wyy.markdown-preview-enhanced
@@ -118,3 +137,6 @@ vscode_extensions:
   - bierner.markdown-mermaid
   - bierner.markdown-preview-github-styles
   - bpruitt-goddard.mermaid-markdown-syntax-highlighting
+
+  # PlantUML
+  - jebbs.plantuml

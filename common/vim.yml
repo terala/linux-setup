@@ -1,5 +1,4 @@
 ---
-
 - name: Load vim configuration
   ansible.builtin.include_vars: vars/vim-config.yml
 
@@ -34,4 +33,3 @@
         dest: "~/.vim/bundle/{{ item.name }}"
         version: "{{ item.branch }}"
       loop: "{{ vim.bundles }}"
-

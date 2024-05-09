@@ -2,7 +2,7 @@
 Name=Wayland Visual Studio Code
 Comment=Code Editing. Redefined in Wayland
 GenericName=Text Editor
-Exec=/usr/share/code/code --unity-launch --enable-features=WaylandWindowDecorations --ozone-platform-hint=auto %F
+Exec=/usr/share/code/code --unity-launch --enable-features=WaylandWindowDecorations --ozone-platform-hint=auto --disable-gpu %F
 Icon=com.visualstudio.code
 Type=Application
 StartupNotify=false
@@ -14,5 +14,5 @@ Keywords=vscode;
 
 [Desktop Action new-empty-window]
 Name=New Empty Window
-Exec=/usr/share/code/code --enable-features=WaylandWindowDecorations --ozone-platform-hint=auto --new-window %F
+Exec=/usr/share/code/code --enable-features=WaylandWindowDecorations --ozone-platform-hint=auto --new-window --disable-gpu %F
 Icon=com.visualstudio.code

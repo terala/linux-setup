@@ -1,0 +1,37 @@
+---
+- name: Load zram swap configuration
+  ansible.builtin.include_vars: vars/zramswap.yml
+
+- name: Install packages for Ubuntu
+  become: true
+  ansible.builtin.apt:
+    name: "{{ zram.ubuntu_packages }}"
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: Disable swapfile
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: false
+    masked: true
+  loop: "{{ zram.service.disable_services }}"
+
+- name: Deploy templates
+  ansible.builtin.template:
+    src: "{{ item.template }}"
+    dest: "{{ item.path }}"
+    owner: root
+    group: root
+    mode: "u=rw,go=r"
+  loop:
+    - template: zram-generator.conf.j2
+      path: /etc/systemd/zram-generator.conf
+    - template: zram-parameters.conf.j2
+      path: /etc/sysctl.d/99-vm-zram-parameters.conf
+
+- name: Enable ZRAM Swap service
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: true
+    masked: false
+  loop: "{{ zram.service.zram_services }}"

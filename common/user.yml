@@ -17,6 +17,13 @@
     name: "{{ ansible_facts.env.SUDO_USER }}"
     shell: /usr/bin/zsh
 
+- name: Create .local/bin directory
+  become: false
+  ansible.builtin.file:
+    path: "~/.local/bin"
+    state: directory
+    mode: "u=rwx,go="
+
 - name: Setup common ssh options
   become: false
   block:

@@ -29,4 +29,3 @@ vim:
     - name: bufexplorer
       url: https://github.com/jlanzarotta/bufexplorer.git
       branch: master
-

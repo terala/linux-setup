@@ -1,0 +1,16 @@
+---
+zram:
+  ram_percent: 10
+  algo: lzo
+
+  ubuntu_packages:
+    - systemd-zram-generator
+    - zram-config
+    - zram-tools
+
+  service:
+    disable_services:
+      - swapfile.swap
+    zram_services:
+      - zram-config.service
+      - zramswap.service

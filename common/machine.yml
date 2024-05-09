@@ -7,6 +7,10 @@
       aliases_path: /etc/profile.d/aliases.sh
 
   tasks:
+
+    - name: Use ZRAM for swap
+      ansible.builtin.include_tasks: zramswap.yml
+
     - name: Use a safer umask default for Debian distros
       ansible.builtin.lineinfile:
         path: "{{ item }}"

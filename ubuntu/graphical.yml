@@ -14,23 +14,12 @@
     state: present
   when: desktop == "gnome"
 
-- name: Install packages from extra sources
-  block:
-    - name: Import key
-      ansible.builtin.apt_key:
-        url: "{{ item.key }}"
-        state: present
-      loop: "{{ extra_sources }}"
-
-    - name: Install extra repos
-      ansible.builtin.apt_repository:
-        repo: "{{ item.deb_line }}"
-        filename: "{{ item.filename }}"
-        state: present
-      loop: "{{ extra_sources }}"
-
-    - name: Install extra packages
-      ansible.builtin.apt:
-        name: "{{ item.pkg }}"
-        state: present
-      loop: "{{ extra_sources }}"
+- name: Install extra repos
+  ansible.builtin.deb822_repository:
+    name: "{{ item.sources_name }}"
+    types: deb
+    uris: "{{ item.uri }}"
+    suites: "{{ item.suites }}"
+    components: "{{ item.components }}"
+    signed_by: "{{ item.gpg }}"
+  loop: "{{ x64_extra_repos if ansible_architecture == 'x86_64' else aarch64_extra_repos }}"

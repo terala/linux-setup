@@ -44,14 +44,27 @@ image_pkgs:
   - gtk2-engines-pixbuf
   - libextractor-plugin-thumbnailgtk
 
-extra_sources:
-  #  - name: Chrome
-  #  deb_line: "deb https://dl.google.com/linux/chrome/deb/ stable main"
-  #  pkg: google-chrome-stable
-  #  key: https://dl.google.com/linux/linux_signing_key.pub
-  #  filename: google-chrome
-  - name: Visual Studio Code
-    deb_line: "deb https://packages.microsoft.com/repos/code stable main"
-    pkg: code
-    key: https://packages.microsoft.com/keys/microsoft.asc
-    filename: vscode
+x64_extra_repos:
+  - name: Chrome
+    sources_name: google-chrome
+    # uris: https://dl.google.com/linux/chrome/rpm/stable/x86_64
+    gpg: "{{ lookup('ansible.builtin.url', 'https://dl.google.com/linux/linux_signing_key.pub', split_lines=False) }}"
+    uri: https://dl.google.com/linux/chrome/deb/
+    suites: stable
+    components:
+      - main
+  - name: Microsoft
+    sources_name: microsoft
+    gpg: "{{ lookup('ansible.builtin.url', 'https://packages.microsoft.com/keys/microsoft.asc', split_lines=False) }}"
+    uri: https://packages.microsoft.com/repos/code
+    suites: stable
+    components:
+      - main
+
+aarch64_extra_repos:
+  - sources_name: microsoft
+    gpg: "{{ lookup('ansible.builtin.url', 'https://packages.microsoft.com/keys/microsoft.asc', split_lines=False) }}"
+    uri: https://packages.microsoft.com/repos/code
+    suites: stable
+    components:
+      - main

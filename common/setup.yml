@@ -16,7 +16,7 @@
   tasks:
     - name: Add current user to the admin
       ansible.builtin.user:
-        name: "{{ ansible_facts.env.SUDO_USER }}"
+        name: "{{ ansible_user_id }}"
         groups: "{{ sudo_group | mandatory }}"
         append: true
 

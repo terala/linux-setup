@@ -35,7 +35,7 @@ ensure_ansible
 install_galaxy_components
 
 echo "Setting up the box"
-if [[ can_sudo_without_password -eq 0 ]]; 
+if can_sudo_without_password; 
 then
   ansible-playbook --become setup.yml
 else

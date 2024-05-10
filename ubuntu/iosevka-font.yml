@@ -36,11 +36,17 @@
 
 - name: Download and install fonts
   vars:
-    rgx: ".zip"
-    replace: ""
-    ttc_list: "{{ ttc_files.files | flatten | map(attribute='path') }}"
-    mapped_list: "{{ ttc_list | map('regex_replace', rgx, replace) | list }}"
-    diff_list: "{{ iosevka_variants | difference(mapped_list) }}"
+    # Find the list of files already instead
+    # 1. ttc_list --> fetch all ttc files from he directory and flatten
+    # 2. map('basename') --> fetch the basename
+    # 3. map('splitext') --> split the filename into various components
+    # 4. map('first') --> get the first element --> base name of the file
+    ttc_list: "{{ ttc_files.files | ansible.builtin.flatten | map(attribute='path') | map('basename') | map('splitext') | map('first') }}"
+
+    # Find the list of ttc files that should be installed.
+    diff_list: "{{ iosevka_variants | difference(ttc_list) }}"
+
+    # Find the corresponding file to be downloaded.
     full_tag: "{{ releases | community.general.json_query('json.tag_name') }}"
     version: "{{ full_tag[1:] }}"
     fontname: "SuperTTC-{{ item }}-{{ version }}.zip"
@@ -51,5 +57,4 @@
     dest: "{{ base_fonts_dir }}/{{ full_tag }}"
     remote_src: true
     mode: ugo=r
-  register: fonts_installed
   loop: "{{ diff_list }}"

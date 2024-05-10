@@ -14,6 +14,7 @@
     name: "{{ item }}"
     enabled: false
     masked: true
+  ignore_errors: true
   loop: "{{ zram.service.disable_services }}"
 
 - name: Deploy templates

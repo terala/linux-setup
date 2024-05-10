@@ -51,11 +51,15 @@
           ansible.builtin.include_vars: vars/tmux-config.yml
 
         - name: Deploy tmux configuration for all new users
-          ansible.builtin.get_url:
-            url: "{{ item.url }}"
-            dest: "/etc/skel/{{ item.filename }}"
+          vars:
+            templates:
+              - tmux.conf
+              - tmux.local.conf
+          ansible.builtin.template:
+            src: "{{ item }}.j2"
+            dest: "/etc/skel/.{{ item }}"
             mode: u=rw,go=r
-          loop: "{{ tmux.files }}"
+          loop: "{{ templates }}"
 
         - name: Enable bash completion for all new users
           ansible.builtin.template:

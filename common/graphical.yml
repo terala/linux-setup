@@ -80,19 +80,15 @@
       changed_when: false
       failed_when: list_extensions_output.rc != 0
 
-    - name: Prep lists
-      ansible.builtin.set_fact:
+    - name: Install VSCode extensions
+      vars:
         lower_installed: "{{ list_extensions_output.stdout_lines | lower }}"
         lower_to_list: "{{ vscode_extensions | lower }}"
-
-    - name: Find the list of extensions to be installed
-      ansible.builtin.set_fact:
         to_be_installed: "{{ lower_to_list | difference(lower_installed) }}"
-
-    - name: Install VSCode extensions
       ansible.builtin.command:
         argv:
           - code
           - --install-extension
           - "{{ item }}"
       loop: "{{ to_be_installed }}"
+      changed_when: "{{ to_be_installed | length > 0 }}"

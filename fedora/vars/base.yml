@@ -3,7 +3,7 @@ base_pkgs:
   - curl
   - fzf
   - git
-  - htop
+  - btop
   - ranger
   - tig
   - tmux

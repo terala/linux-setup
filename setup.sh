@@ -5,14 +5,40 @@ set -e
 
 PATH=$PATH:$HOME/.local/bin
 
+
+# Base pre-reqs:
+# For fedora: install the following
+#   - pipx
+#   - python3-psutil
+
+# For Ubuntu: install the following
+#   - pipx
+
+# After pre-reqs are installed, install these for Ansible:
+# pipx install --include-deps ansible jmespath
+# pipx inject ansible jmespath
+
+function ensure_pipx() {
+  echo -n "Checking for pipx ... "
+  if ! command -v pipx &> /dev/null
+  then
+    pkcon install -y pipx python3-psutil
+    echo "Done."
+  else
+    echo "Found."
+  fi
+}
+
+
 function ensure_ansible() {
   echo -n "Checking for ansible ... "
   if ! command -v ansible &> /dev/null
   then
     echo "Not Found. Installing..."
-    curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
-    python3 /tmp/get-pip.py
-    python3 -m pip install ansible psutil
+    ensure_pipx
+
+    pipx install --include-deps ansible jmespath
+    pipx inject ansible jmespath
     echo "Done."
   else
     echo "Found."

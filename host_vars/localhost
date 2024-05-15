@@ -1,4 +1,4 @@
 ---
 graphical: true
-avahi: true
-virtualization: true
+avahi: false
+virtualization: false

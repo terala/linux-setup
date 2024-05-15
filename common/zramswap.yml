@@ -7,7 +7,7 @@
   ansible.builtin.apt:
     name: "{{ zram.ubuntu_packages }}"
     state: present
-  when: ansible_os_family == 'Debian'
+  when: ansible_os_family == "Debian"
 
 - name: Disable swapfile
   ansible.builtin.systemd_service:
@@ -36,3 +36,5 @@
     enabled: true
     masked: false
   loop: "{{ zram.service.zram_services }}"
+  when: ansible_os_family == "Debian"
+

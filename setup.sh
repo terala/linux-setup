@@ -5,24 +5,16 @@ set -e
 
 PATH=$PATH:$HOME/.local/bin
 
-
-# Base pre-reqs:
-# For fedora: install the following
-#   - pipx
-#   - python3-psutil
-
-# For Ubuntu: install the following
-#   - pipx
-
-# After pre-reqs are installed, install these for Ansible:
-# pipx install --include-deps ansible jmespath
-# pipx inject ansible jmespath
-
 function ensure_pipx() {
   echo -n "Checking for pipx ... "
+  if grep -q "ID=ubuntu" /etc/os-release; then
+    consent=""
+  else
+    consent="-y"
+  fi
   if ! command -v pipx &> /dev/null
   then
-    pkcon install -y pipx python3-psutil
+    pkcon install $consent pipx python3-psutil
     echo "Done."
   else
     echo "Found."

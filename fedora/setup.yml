@@ -9,3 +9,7 @@
     - name: Install graphical packages
       ansible.builtin.import_tasks: graphical.yml
       when: graphical
+
+    - name: Install kubernetes tools
+      ansible.builtin.import_tasks: kubernetes-tools.yml
+      when: kubernetes_tools

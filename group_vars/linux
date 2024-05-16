@@ -1,6 +1,10 @@
 ---
-graphical: true
-desktop: gnome
-
-umask: "0077"
 sudo_group: admin
+umask: "0077"
+
+# Override these per installation in host_vars/linux
+
+graphical: false
+kubernetes_tools: false
+avahi: false
+virtualization: false

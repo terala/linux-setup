@@ -1,0 +1,17 @@
+---
+- name: Initialize install set
+  ansible.builtin.include_vars: vars/kubernetes_tools.yml
+
+- name: Install yum repo
+  ansible.builtin.yum_repository:
+    name: "Kubernetes"
+    description: "Kubernetes Packages"
+    baseurl: "{{ k8s_tools.yum_repo_base_url }}"
+    gpgkey: "{{ k8s_tools.yum_repo_gpg_key }}"
+    state: present
+    enabled: true
+
+- name: Install kubernetes tools packages"
+  ansible.builtin.yum:
+    name: "{{ k8s_tools.rpm_pkgs }}"
+    state: present

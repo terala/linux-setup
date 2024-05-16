@@ -13,3 +13,7 @@
     - name: Install Iosevka fonts
       ansible.builtin.import_tasks: iosevka-font.yml
       when: graphical
+
+    - name: Install kuberntes tools
+      ansible.builtin.import_tasks: kubernetes-tools.yml
+      when: kubernetes_tools

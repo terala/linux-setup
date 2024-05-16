@@ -1,0 +1,7 @@
+---
+k8s_tools:
+  yum_repo_base_url: "https://pkgs.k8s.io/core:/stable:/{{ k8s_version }}/rpm/"
+  yum_repo_gpg_key: "https://pkgs.k8s.io/core:/stable:/{{ k8s_version }}/rpm/repodata/repomd.xml.key"
+  rpm_pkgs:
+    - kubectl
+    - helm

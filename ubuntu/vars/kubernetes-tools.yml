@@ -1,0 +1,13 @@
+---
+k8s:
+  version: "v1.30"
+# apt_keyring_gpg_url: "https://pkgs.k8s.io/core:/stable:/{{ version }}/deb/Release.key"
+# apt_keyring_file: "/etc/apt/keyrings/kubernetes.gpg"
+# apt_temp_file_name: /tmp/k8s-release-gpg.key
+
+  suites: "/"
+  components: None
+
+apt_pkgs:
+  - kubectl
+  - helm

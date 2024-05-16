@@ -1,4 +1,7 @@
 ---
+# Override these values to reflect installing in the current host.
 graphical: true
-avahi: false
+desktop: gnome
+avahi: true
 virtualization: false
+kubernetes_tools: true

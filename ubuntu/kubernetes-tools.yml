@@ -1,0 +1,59 @@
+---
+- name: Initialize variables
+  ansible.builtin.include_vars: vars/kubernetes-tools.yml
+
+# - name: Check if the gpg key is already imported
+#   ansible.builtin.stat:
+#     path: "{{ apt_keyring_file }}"
+#   register: krf
+
+# - name: Download k8s releae gpg key
+#   ansible.builtin.get_url:
+#     url: "{{ apt_keyring_gpg_url }}"
+#     dest: "{{ apt_temp_file_name }}"
+#     mode: "u=rw,go="
+#   when: krf.stat.exists == false
+
+# - name:  Dearmor and import gpg key
+#   ansible.builtin.command:
+#     argv:
+#       - /usr/bin/gpg
+#       - --dearmor
+#       - -o
+#       - "{{ apt_keyring_file }}"
+#       - "{{ apt_temp_file_name }}"
+#     creates: "{{ apt_keyring_file }}"
+#   when: krf.stat.exists == false
+
+- name: Install Kubernetes apt repos
+  vars:
+    gpg: "{{ lookup('ansible.builtin.url', 'https://pkgs.k8s.io/core:/stable:/{{ k8s.version }}/deb/Release.key', split_lines=False) }}"
+    uri: "https://pkgs.k8s.io/core:/stable:/{{ k8s.version }}/deb/"
+  ansible.builtin.deb822_repository:
+    name: "kubernetes"
+    types: deb
+    uris: "{{ uri }}"
+    signed_by: "{{ gpg }}"
+    suites: "{{ k8s.suites }}"
+    # components: "{{ k8s.components }}"
+
+- name: Install Helm apt repo
+  vars:
+    gpg: "{{ lookup('ansible.builtin.url', 'https://baltocdn.com/helm/signing.asc', split_lines=False) }}"
+    uri: "https://baltocdn.com/helm/stable/debian/"
+    suites: "all"
+    components:
+      - main
+  ansible.builtin.deb822_repository:
+    name: "helm"
+    types: deb
+    uris: "{{ uri }}"
+    signed_by: "{{ gpg }}"
+    suites: "{{ suites }}"
+    components: "{{ components }}"
+
+- name: Install k8s tools
+  ansible.builtin.apt:
+    name: "{{ apt_pkgs }}"
+    state: present
+    update_cache: true

@@ -11,25 +11,30 @@
     - name: Use ZRAM for swap
       ansible.builtin.include_tasks: zramswap.yml
 
-    - name: Use a safer umask default for Debian distros
-      ansible.builtin.lineinfile:
-        path: "{{ item }}"
-        regexp: "^session optional\\s+pam_umask.so$"
-        line: "session optional pam_umask.so umask={{ umask }}"
-      loop:
-        - /etc/pam.d/common-session
-        - /etc/pam.d/common-session-noninteractive
-      when: ansible_os_family == 'Debian'
+    # - name: Use a safer umask default for Debian distros
+    #   ansible.builtin.lineinfile:
+    #     path: "{{ item }}"
+    #     regexp: "^session optional\\s+pam_umask.so$"
+    #     line: "session optional pam_umask.so umask={{ umask }}"
+    #   loop:
+    #     - /etc/pam.d/common-session
+    #     - /etc/pam.d/common-session-noninteractive
+    #   when: ansible_os_family == 'Debian'
 
-    - name: Use a safer umask default for RedHat distros
-      ansible.builtin.lineinfile:
-        path: "{{ item }}"
-        regexp: "^session\\s+optional\\s+pam_umask.so"
-        line: "session optional pam_umask.so umask={{ umask }} silent"
-      loop:
-        - /etc/pam.d/postlogin
-      when: ansible_os_family == 'RedHat'
+    # - name: Use a safer umask default for RedHat distros
+    #   ansible.builtin.lineinfile:
+    #     path: "{{ item }}"
+    #     regexp: "^session\\s+optional\\s+pam_umask.so"
+    #     line: "session optional pam_umask.so umask={{ umask }} silent"
+    #   loop:
+    #     - /etc/pam.d/postlogin
+    #   when: ansible_os_family == 'RedHat'
 
+    - name: Use a safer umask default
+      ansible.builtin.lineinfile:
+        path: "/etc/login.defs"
+        regexp: "^UMASK\\s+\\d+$"
+        line: "UMASK    {{ umask }}"
 
     - name: Deploy common aliases
       ansible.builtin.template:

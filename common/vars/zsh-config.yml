@@ -17,21 +17,38 @@ zsh:
     - aws
     - colorize
     - common-aliases
+    - cp
     - docker
     - docker-compose
     - encode64
+    - eza
+    - fasd
+    - fzf
     - git
     - git-extras
     - git-lfs
+    - git-prompt
     - github
     - gitignore
     - golang
+    - golang
     - gradle
+    - helm
+    - k9s
+    - kubectl
+    - kubectx
     - lib/clipboard
+    - microk8s
+    - podman
+    - ssh
+    - sudo
+    - systemd
     - tig
     - tmux
     - tmuxinator
+    - yum
     - zsh-interactive-cd
+    - zsh-navigation-tools
 
   plugins:
     - CristianCantoro/colorbira-zsh-theme
